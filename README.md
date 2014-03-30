@@ -28,8 +28,3 @@ A WordPress plugin providing basic, extensible functionality for managing course
 * `pcm_booking_denied` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
 * `pcm_booking_completed` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
 * `pcm_booking_deleted` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
-
-## Changelog
-
-### 0.1
-* First version
