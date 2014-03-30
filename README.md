@@ -1,6 +1,8 @@
 # Pilau Course Management
 
-Basic, extensible functionality for managing courses, which include some offline and some online components.
+A WordPress plugin providing basic, extensible functionality for managing courses, which include some offline and some online components.
+
+**NOTE:** Depends on the [Developer's Custom Fields](https://github.com/gyrus/WordPress-Developers-Custom-Fields) plugin.
 
 ## Filter hooks
 
