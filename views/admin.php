@@ -6,7 +6,7 @@
  * The User Interface to the end user.
  *
  * @package   Pilau_Course_Management
- * @author    Steve Taylor <steve@sltaylor.co.uk>
+ * @author    Steve Taylor
  * @license   GPL-2.0+
  * @copyright 2013 Public Life
  */
