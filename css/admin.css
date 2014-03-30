@@ -1,0 +1,89 @@
+.pcm-cf:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+table.pcm-table {
+  margin: 2em 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table.pcm-table th,
+table.pcm-table td {
+  padding: .5em 1em;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+table.pcm-table th {
+  background-color: #666;
+  color: #fff;
+  border-color: #666;
+}
+table.pcm-table tr.alt {
+  background-color: #ddd;
+}
+table.pcm-table td.actions {
+  color: #ccc;
+}
+table.pcm-table a {
+  text-decoration: none;
+}
+table.pcm-table a:hover,
+table.pcm-table a:focus {
+  text-decoration: underline;
+}
+.pcm-form textarea.copy {
+  width: 100%;
+  max-width: 40em;
+  height: 25em;
+}
+.pcm-form .buttons {
+  margin: 2em 0;
+}
+#pcm-send-invitations ul.invitees li {
+  margin-bottom: 1em;
+}
+#pcm-send-invitations ul.invitees li a.remove {
+  display: inline-block;
+  margin-left: .5em;
+  width: 16px;
+  height: 16px;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  background: url('/wp-admin/images/no.png') no-repeat;
+}
+#pcm-send-invitations ul.invitees li.new-invitee input.regular-text {
+  width: 15em !important;
+  margin-right: 1em;
+}
+#pcm-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.6);
+}
+#pcm-invitation-preview {
+  display: none;
+  position: absolute;
+  z-index: 999999;
+  width: 40em;
+  height: 50em;
+  left: 50%;
+  margin-left: -20em;
+  top: 50%;
+  margin-top: -25em;
+  padding: 2em;
+  background-color: #fff;
+}
+#pcm-bookings-filters {
+  margin: 2em 0;
+}
+#pcm-bookings-filters div.filter {
+  float: left;
+  margin: 0 1.5em .5em 0;
+}

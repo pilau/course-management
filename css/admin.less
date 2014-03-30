@@ -1,0 +1,109 @@
+
+// Clearfix
+.pcm-cf:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+// Generic table
+table.pcm-table {
+	margin: 2em 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	th, td {
+		padding: .5em 1em;
+		text-align: left;
+		border: 1px solid #ccc;
+	}
+	th {
+		background-color: #666;
+		color: #fff;
+		border-color: #666;
+	}
+	tr.alt {
+		background-color: #ddd;
+	}
+	td.actions {
+		color: #ccc;
+	}
+	a {
+		text-decoration: none;
+		&:hover, &:focus {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Forms
+.pcm-form {
+	textarea.copy {
+		width: 100%;
+		max-width: 40em;
+		height: 25em;
+	}
+	.buttons {
+		margin: 2em 0;
+	}
+}
+
+// Send invitations
+#pcm-send-invitations {
+	ul.invitees {
+		li {
+			margin-bottom: 1em;
+			a.remove {
+				display: inline-block;
+				margin-left: .5em;
+				width: 16px;
+				height: 16px;
+				text-indent: 100%;
+				white-space: nowrap;
+				overflow: hidden;
+				background: url('/wp-admin/images/no.png') no-repeat;
+			}
+			&.new-invitee {
+				input.regular-text {
+					width: 15em !important;
+					margin-right: 1em;
+				}
+			}
+		}
+	}
+}
+
+// Overlay
+#pcm-overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 99999;
+	background: rgba( 0, 0, 0, 0.6 );
+}
+
+// Invitation preview
+#pcm-invitation-preview {
+	display: none;
+	position: absolute;
+	z-index: 999999;
+	width: 40em;
+	height: 50em;
+	left: 50%;
+	margin-left: -20em;
+	top: 50%;
+	margin-top: -25em;
+	padding: 2em;
+	background-color: #fff;
+}
+
+// Manage bookings filters
+#pcm-bookings-filters {
+	margin: 2em 0;
+	div.filter {
+		float: left;
+		margin: 0 1.5em .5em 0;
+	}
+}
