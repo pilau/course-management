@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.2.3
+* Made `change_user_role` public
+
 ## 0.2.2
 * More testing
 

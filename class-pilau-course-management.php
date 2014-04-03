@@ -24,7 +24,7 @@ class Pilau_Course_Management {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '0.2.2';
+	const VERSION = '0.2.3';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -162,7 +162,7 @@ class Pilau_Course_Management {
 	 * @param	string	$old_role	Optional - if set, new role is set only if current role matches this
 	 * @return	void
 	 */
-	protected function change_user_role( $user_id, $new_role, $old_role = null ) {
+	public static function change_user_role( $user_id, $new_role, $old_role = null ) {
 
 		// Get user
 		$user = new WP_User( $user_id );
