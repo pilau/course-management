@@ -2,6 +2,7 @@
 
 ## 0.2.3
 * Made `change_user_role` public
+* Added `no_course_lessons_id_zero()`, so lessons not assigned to a course get lesson ID `0` stored, to enable easier selection of lessons with no course.
 
 ## 0.2.2
 * More testing

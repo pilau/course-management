@@ -97,6 +97,7 @@ class Pilau_Course_Management {
 		add_filter( 'title_save_pre', array( $this, 'course_instance_title' ) );
 		add_action( 'save_post_pcm-course-instance', array( $this, 'default_course_end_date' ), 10, 2 );
 		add_action( 'save_post_pcm-course-instance', array( $this, 'synch_course_booking_dates' ), 11, 2 );
+		add_action( 'slt_cf_pre_save_value', array( $this, 'no_course_lessons_id_zero' ), 11, 5 );
 
 	}
 
@@ -1148,6 +1149,22 @@ class Pilau_Course_Management {
 			}
 		}
 
+	}
+
+	/**
+	 * Course ID 0 for lessons with no course
+	 *
+	 * This enables easier selection of lessons with no associated course
+	 *
+	 * @since 0.2.3
+	 */
+	public function no_course_lessons_id_zero( $value, $request_type, $object_id, $object, $field ) {
+
+		if ( $request_type == 'post' && get_post_type( $object ) == 'pcm-lesson' && $field['name'] == 'pcm-lesson-course' && empty( $value ) ) {
+			$value = 0;
+		}
+
+		return $value;
 	}
 
 	/**
