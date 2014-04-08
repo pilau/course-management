@@ -865,7 +865,7 @@ class Pilau_Course_Management {
 					$course = get_post( $course_id );
 					$course_name = $course->post_name;
 				} else {
-					$course_name = 'no-course';
+					$course_name = apply_filters( 'pcm_no_course_lesson_slug', 'no-course', $url, $post );
 				}
 
 				// Get the course slug and replace

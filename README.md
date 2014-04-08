@@ -20,6 +20,7 @@ A WordPress plugin providing basic, extensible functionality for managing course
 * `pcm_placeholder_replacements` - Filter placeholder replacements.
 * `pcm_users_to_book_args` - Filter arguments for getting users to list on the 'Add bookings' admin screen. You can specifiy multiple roles in the `role` argument, using an array, and the limitations of `get_users()` will be bypassed!
 * `pcm_courses_to_book_args` - Filter arguments for getting course instances to list on the 'Add bookings' admin screen.
+* `pcm_no_course_lesson_slug` - Filter the slug for lessons not associated with a course.
 
 ## Action hooks
 
