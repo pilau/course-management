@@ -24,7 +24,7 @@ class Pilau_Course_Management {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '0.2.3';
+	const VERSION = '0.3';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -873,7 +873,9 @@ class Pilau_Course_Management {
 
 			}
 
-		} else if ( get_post_type( $post ) == 'pcm-course-instance' && function_exists( 'slt_cf_field_value' ) ) {
+		} else if ( get_post_type( $post ) == 'pcm-course-instance' && function_exists( 'slt_cf_field_exists' ) && slt_cf_field_exists( 'pcm-course-date-start', 'post', $post->ID ) ) {
+
+			// Course instance permalink
 			$course_date_start = explode( '/', slt_cf_field_value( 'pcm-course-date-start', 'post', $post->ID ) );
 
 			if ( strpos( $url, '%courseyear%' ) !== false ) {
@@ -1056,6 +1058,15 @@ class Pilau_Course_Management {
 							'required'		=> true,
 							'scope'			=> array( 'pcm-course-instance' ),
 							'capabilities'	=> array( 'edit_posts', 'edit_pages' )
+						),
+						array(
+							'name'				=> 'pcm-course-non-bookable',
+							'label'				=> 'Non-bookable',
+							'type'				=> 'checkbox',
+							'description'		=> __( 'Check this to exclude this course from the booking system.', $this->plugin_slug ),
+							'default'			=> false,
+							'scope'				=> array( 'pcm-course-instance' ),
+							'capabilities'		=> array( 'edit_posts', 'edit_pages' )
 						),
 						array(
 							'name'				=> 'pcm-course-date-start',
@@ -1639,84 +1650,110 @@ class Pilau_Course_Management {
 	 * @param		int			$course_instance_id		The ID of the course instance
 	 * @param		int			$user_id				The ID of the user (defaults to current user)
 	 * @param		bool		$suppress_notification
-	 * @return		mixed		Returns true if booking was made, or error: 'already-booked' | 'error'
+	 * @return		mixed		Returns true if booking was made, or error: 'already-booked' | 'error' | 'non-bookable'
 	 */
 	public function submit_booking( $course_instance_id, $user_id = 0, $suppress_notification = false ) {
 		$booking = 'error';
 
-		// User ID
-		if ( $user_id || $user_id = get_current_user_id() ) {
+		// Check that the course is bookable
+		if ( $this->is_course_bookable( $course_instance_id ) ) {
 
-			// Get current user courses
-			$courses = $this->get_user_courses( $user_id );
-			//echo '<pre>a1'; print_r( $courses ); echo '</pre>';
+			// User ID
+			if ( $user_id || $user_id = get_current_user_id() ) {
 
-			// Check if course is already booked
-			foreach ( $courses as $course ) {
-				if ( $course_instance_id == $course['course_instance_id'] ) {
-					$booking = 'already-booked';
-					break;
-				}
-			}
+				// Get current user courses
+				$courses = $this->get_user_courses( $user_id );
+				//echo '<pre>a1'; print_r( $courses ); echo '</pre>';
 
-			if ( $booking != 'already-booked' ) {
-
-				// Get the meta
-				$course_instance_meta = slt_cf_all_field_values( 'post', $course_instance_id, array( 'pcm-course-type' ) );
-
-				// Is this retrospective?
-				$retrospective_booking = $course_instance_meta['pcm-course-date-start'] <= date( 'Y/m/d' );
-
-				// Add booking
-				$courses[] = array(
-					'course_instance_id'	=> $course_instance_id,
-					'course_date_start'		=> $course_instance_meta['pcm-course-date-start'],
-					'course_date_end'		=> $course_instance_meta['pcm-course-date-end'],
-					'course_id'				=> $course_instance_meta['pcm-course-type'],
-					'booking_submitted'		=> time(),
-					'booking_approved'		=> null,
-					'booking_denied'		=> null,
-					'booking_completed'		=> null,
-					'booking_status'		=> 'pending'
-				);
-				//echo '<pre>a2'; print_r( $courses ); echo '</pre>';
-
-				// Update user courses
-				$this->set_user_courses( $courses, $user_id );
-				//echo '<pre>a3'; print_r( $this->get_user_courses( $user_id ) ); echo '</pre>'; exit;
-				$booking = true;
-
-				// Email notification?
-				$email_notifications = get_option( 'pcm_email_notifications' );
-				if (	isset( $email_notifications['booking-alert'] ) && $email_notifications['booking-alert'] &&
-						isset( $email_notifications['booking-email'] ) && $email_notifications['booking-email'] &&
-						function_exists( 'slt_cf_reverse_date' ) &&
-						! $suppress_notification &&
-						! $retrospective_booking
-				) {
-					$userdata = get_userdata( $user_id );
-
-					$message = "\nBooking details:\n\nUser: " . $userdata->display_name . "\nCourse(s): " . cfhe_multiple_post_titles( $course_instance_meta['pcm-course-type'] ) . "\nCourse instance: " . get_the_title( $course_instance_id ) . " (" . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-start'] );
-					if ( $course_instance_meta['pcm-course-date-start'] != $course_instance_meta['pcm-course-date-end'] ) {
-						$message .= ' - ' . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-end'] );
+				// Check if course is already booked
+				foreach ( $courses as $course ) {
+					if ( $course_instance_id == $course['course_instance_id'] ) {
+						$booking = 'already-booked';
+						break;
 					}
-					$message .= ")\nSubmitted: " . date( 'd/m/Y H:i' ) . "\n\nManage bookings: " . admin_url( 'edit.php?post_type=pcm-course-instance&page=pcm-manage-bookings' );
-					wp_mail(
-						$email_notifications['booking-email'],
-						'[' . get_bloginfo( 'name' ) . '] ' . __( 'Booking submitted' ),
-						$message
+				}
+
+				if ( $booking != 'already-booked' ) {
+
+					// Get the meta
+					$course_instance_meta = slt_cf_all_field_values( 'post', $course_instance_id, array( 'pcm-course-type' ) );
+
+					// Is this retrospective?
+					$retrospective_booking = $course_instance_meta['pcm-course-date-start'] <= date( 'Y/m/d' );
+
+					// Add booking
+					$courses[] = array(
+						'course_instance_id'	=> $course_instance_id,
+						'course_date_start'		=> $course_instance_meta['pcm-course-date-start'],
+						'course_date_end'		=> $course_instance_meta['pcm-course-date-end'],
+						'course_id'				=> $course_instance_meta['pcm-course-type'],
+						'booking_submitted'		=> time(),
+						'booking_approved'		=> null,
+						'booking_denied'		=> null,
+						'booking_completed'		=> null,
+						'booking_status'		=> 'pending'
 					);
+					//echo '<pre>a2'; print_r( $courses ); echo '</pre>';
+
+					// Update user courses
+					$this->set_user_courses( $courses, $user_id );
+					//echo '<pre>a3'; print_r( $this->get_user_courses( $user_id ) ); echo '</pre>'; exit;
+					$booking = true;
+
+					// Email notification?
+					$email_notifications = get_option( 'pcm_email_notifications' );
+					if (	isset( $email_notifications['booking-alert'] ) && $email_notifications['booking-alert'] &&
+							isset( $email_notifications['booking-email'] ) && $email_notifications['booking-email'] &&
+							function_exists( 'slt_cf_reverse_date' ) &&
+							! $suppress_notification &&
+							! $retrospective_booking
+					) {
+						$userdata = get_userdata( $user_id );
+
+						$message = "\nBooking details:\n\nUser: " . $userdata->display_name . "\nCourse(s): " . cfhe_multiple_post_titles( $course_instance_meta['pcm-course-type'] ) . "\nCourse instance: " . get_the_title( $course_instance_id ) . " (" . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-start'] );
+						if ( $course_instance_meta['pcm-course-date-start'] != $course_instance_meta['pcm-course-date-end'] ) {
+							$message .= ' - ' . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-end'] );
+						}
+						$message .= ")\nSubmitted: " . date( 'd/m/Y H:i' ) . "\n\nManage bookings: " . admin_url( 'edit.php?post_type=pcm-course-instance&page=pcm-manage-bookings' );
+						wp_mail(
+							$email_notifications['booking-email'],
+							'[' . get_bloginfo( 'name' ) . '] ' . __( 'Booking submitted' ),
+							$message
+						);
+
+					}
+
+					// Hook
+					do_action( 'pcm_booking_submitted', $course_instance_id, $user_id, $course_instance_meta, $suppress_notification );
 
 				}
 
-				// Hook
-				do_action( 'pcm_booking_submitted', $course_instance_id, $user_id, $course_instance_meta, $suppress_notification );
-
 			}
+
+		} else {
+
+			$booking = 'non-bookable';
 
 		}
 
 		return $booking;
+	}
+
+	/**
+	 * Check if a course instance is bookable
+	 *
+	 * @since		0.3
+	 * @param		int			$course_instance_id
+	 * @return		bool
+	 */
+	public function is_course_bookable( $course_instance_id ) {
+		$bookable = true;
+
+		if ( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-non-bookable', 'post', $course_instance_id ) ) {
+			$bookable = false;
+		}
+
+		return $bookable;
 	}
 
 	/**
