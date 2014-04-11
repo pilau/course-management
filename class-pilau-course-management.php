@@ -2035,6 +2035,50 @@ class Pilau_Course_Management {
 	}
 
 	/**
+	 * Check if a user has booked a course (and not been denied)
+	 *
+	 * @since		0.1
+	 * @param		int		$course_id	The ID of the course
+	 * @param		int		$user_id	The ID of the user (defaults to current user ID;
+	 * 									returns false if user isn't logged in)
+	 * @return		bool
+	 */
+	public function user_has_booked_course( $course_id, $user_id = null ) {
+		$course_booked = false;
+
+		if ( ! ctype_digit( $user_id ) ) {
+
+			// If not logged in, don't bother
+			if ( is_user_logged_in() ) {
+
+				// Try to get current user
+				$user_id = get_current_user_id();
+
+			}
+
+		}
+
+		if ( $user_id ) {
+
+			// Get user's course details
+			$courses = $this->get_user_courses( $user_id );
+
+			// Check for booking
+			if ( $courses && is_array( $courses ) ) {
+				foreach ( $courses as $course ) {
+					if ( $course['booking_status'] != 'denied' && in_array( $course_id, $course['course_id'] ) ) {
+						$course_booked = true;
+						break;
+					}
+				}
+			}
+
+		}
+
+		return $course_booked;
+	}
+
+	/**
 	 * Check if a user has completed a course
 	 *
 	 * @since		0.1
