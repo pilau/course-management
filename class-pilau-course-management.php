@@ -124,7 +124,7 @@ class Pilau_Course_Management {
 	 * @since	0.1
 	 * @param	string	$role
 	 */
-	protected function role_args( $role ) {
+	protected static function role_args( $role ) {
 		$args = array();
 
 		switch ( $role ) {
@@ -821,7 +821,7 @@ class Pilau_Course_Management {
 	 *
 	 * @since		0.1
 	 */
-	public function custom_rewrite_rules() {
+	public static function custom_rewrite_rules() {
 
 		// Register tags
 		add_rewrite_tag( '%coursename%', '([a-zA-Z0-9\-]*)' );

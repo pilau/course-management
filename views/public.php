@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Represents the view for the public-facing component of the plugin.
  *
@@ -10,5 +11,5 @@
  * @license   GPL-2.0+
  * @copyright 2013 Public Life
  */
-?>
-<!-- This file is used to markup the public facing aspect of the plugin. -->
+
+/* This file is used to markup the public facing aspect of the plugin. */
