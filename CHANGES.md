@@ -6,6 +6,7 @@
 * Added `pcm_no_course_lesson_slug` filter.
 * Added `user_has_booked_course` method.
 * Added option for non-bookable courses.
+* Added output of booking infos on user profiles for admins.
 
 ## 0.2.2
 * More testing

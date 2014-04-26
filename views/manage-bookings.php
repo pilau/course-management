@@ -281,7 +281,7 @@ switch ( $pcm_mode ) {
 									<td><?php echo $pcm_userinfo->display_name; ?></td>
 								<?php } ?>
 								<?php if ( ! $pcm_course_id ) { ?>
-									<td><?php echo cfhe_multiple_post_titles( $pcm_booking['details']['course_id'] ); ?></td>
+									<td><?php echo $this->multiple_post_titles( $pcm_booking['details']['course_id'] ); ?></td>
 								<?php } ?>
 								<?php if ( ! $pcm_course_instance_id ) { ?>
 									<td><?php echo get_the_title( $pcm_booking['details']['course_instance_id'] ); ?></td>

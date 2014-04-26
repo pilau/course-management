@@ -78,6 +78,10 @@ class Pilau_Course_Management {
 		// Add any admin menus
 		add_action( 'admin_menu', array( $this, 'admin_menus' ) );
 
+		// Output on user profiles
+		add_action( 'show_user_profile', array( $this, 'user_profile_output' ) );
+		add_action( 'edit_user_profile', array( $this, 'user_profile_output' ) );
+
 		// Add an action link pointing to the options page.
 		// $plugin_basename = plugin_basename( plugin_dir_path( __FILE__ ) . 'pilau-course-management.php' );
 		// add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
@@ -608,9 +612,10 @@ class Pilau_Course_Management {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_styles() {
-
 		$screen = get_current_screen();
-		if ( $screen->id == $this->plugin_screen_hook_suffix || strpos( $screen->id, 'pcm-course' ) !== false ) {
+		//echo '<pre>'; print_r( $screen ); echo '</pre>'; exit;
+
+		if ( $screen->id == $this->plugin_screen_hook_suffix || strpos( $screen->id, 'pcm-course' ) !== false || in_array( $screen->id, array( 'profile', 'user-edit' ) ) ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), self::VERSION );
 		}
 
@@ -744,6 +749,23 @@ class Pilau_Course_Management {
 		$cap = apply_filters( 'pcm_cap', $cap, $action );
 
 		return $cap;
+	}
+
+	/**
+	 * User profile output
+	 *
+	 * @since	0.3
+	 * @return	void
+	 * user_profile_output
+	 */
+	public function user_profile_output() {
+
+		// Course booking details for admins
+		if ( current_user_can( 'update_core' ) ) {
+			echo '<h3>Course booking details</h3>';
+			include_once( 'views/list-bookings.php' );
+		}
+
 	}
 
 	/**
@@ -1710,7 +1732,7 @@ class Pilau_Course_Management {
 					) {
 						$userdata = get_userdata( $user_id );
 
-						$message = "\nBooking details:\n\nUser: " . $userdata->display_name . "\nCourse(s): " . cfhe_multiple_post_titles( $course_instance_meta['pcm-course-type'] ) . "\nCourse instance: " . get_the_title( $course_instance_id ) . " (" . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-start'] );
+						$message = "\nBooking details:\n\nUser: " . $userdata->display_name . "\nCourse(s): " . $this->multiple_post_titles( $course_instance_meta['pcm-course-type'] ) . "\nCourse instance: " . get_the_title( $course_instance_id ) . " (" . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-start'] );
 						if ( $course_instance_meta['pcm-course-date-start'] != $course_instance_meta['pcm-course-date-end'] ) {
 							$message .= ' - ' . slt_cf_reverse_date( $course_instance_meta['pcm-course-date-end'] );
 						}
@@ -2186,6 +2208,37 @@ class Pilau_Course_Management {
 			$string = str_replace( array( "\'", '\"' ), array( "'", '"' ), $string );
 		}
 		return $string;
+	}
+
+	/**
+	 * Helper to string together multiple post titles
+	 *
+	 * @since	0.3
+	 * @param	mixed		$ids	Integer or array
+	 * @param	string		$sep
+	 * @param	mixed		$link	'edit' | 'view' | false
+	 * @return	string
+	 */
+	public function multiple_post_titles( $ids, $sep = ' / ', $link = false ) {
+		$titles = array();
+		if ( ! is_array( $ids ) ) {
+			$ids = (array) $ids;
+		}
+		foreach ( $ids as $id ) {
+			$title = get_the_title( $id );
+			if ( $link ) {
+				switch ( $link ) {
+					case 'edit':
+						$title = '<a href="' . get_edit_post_link( $id ) . '" title="' . __( 'Click to edit', $this->plugin_slug ) . '">' . $title . '</a>';
+						break;
+					case 'view':
+						$title = '<a href="' . get_permalink( $id ) . '" title="' . __( 'Click to view', $this->plugin_slug ) . '">' . $title . '</a>';
+						break;
+				}
+			}
+			$titles[] = $title;
+		}
+		return implode( $sep, $titles );
 	}
 
 }
