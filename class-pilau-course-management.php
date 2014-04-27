@@ -21,7 +21,6 @@ class Pilau_Course_Management {
 	 * Plugin version, used for cache-busting of style and script file references.
 	 *
 	 * @since   0.1
-	 *
 	 * @var     string
 	 */
 	const VERSION = '0.3';
@@ -33,7 +32,6 @@ class Pilau_Course_Management {
 	 * match the Text Domain file header in the main plugin file.
 	 *
 	 * @since    0.1
-	 *
 	 * @var      string
 	 */
 	protected $plugin_slug = 'pilau-course-management';
@@ -42,7 +40,6 @@ class Pilau_Course_Management {
 	 * Instance of this class.
 	 *
 	 * @since    0.1
-	 *
 	 * @var      object
 	 */
 	protected static $instance = null;
@@ -51,7 +48,6 @@ class Pilau_Course_Management {
 	 * Slug of the plugin screen.
 	 *
 	 * @since    0.1
-	 *
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
@@ -60,7 +56,6 @@ class Pilau_Course_Management {
 	 * Default booking statuses
 	 *
 	 * @since    0.1
-	 *
 	 * @var      string
 	 */
 	protected $booking_statuses = array( 'pending', 'approved', 'denied', 'completed' );
@@ -68,7 +63,8 @@ class Pilau_Course_Management {
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
-	 * @since     0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	private function __construct() {
 
@@ -118,7 +114,6 @@ class Pilau_Course_Management {
 	 * Return an instance of this class.
 	 *
 	 * @since     0.1
-	 *
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
@@ -136,6 +131,7 @@ class Pilau_Course_Management {
 	 *
 	 * @since	0.1
 	 * @param	string	$role
+	 * @return	array
 	 */
 	protected static function role_args( $role ) {
 		$args = array();
@@ -227,9 +223,9 @@ class Pilau_Course_Management {
 	/**
 	 * Fired when the plugin is deactivated.
 	 *
-	 * @since    0.1
-	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
+	 * @since	0.1
+	 * @param	boolean    $network_wide    True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
+	 * @return	void
 	 */
 	public static function deactivate( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
@@ -253,9 +249,9 @@ class Pilau_Course_Management {
 	/**
 	 * Fired when a new site is activated with a WPMU environment.
 	 *
-	 * @since    0.1
-	 *
+	 * @since	0.1
 	 * @param	int	$blog_id ID of the new blog.
+	 * @return	void
 	 */
 	public function activate_new_site( $blog_id ) {
 		if ( 1 !== did_action( 'wpmu_new_blog' ) )
@@ -272,8 +268,7 @@ class Pilau_Course_Management {
 	 * - not spam
 	 * - not deleted
 	 *
-	 * @since    0.1
-	 *
+	 * @since	0.1
 	 * @return	array|false	The blog ids, false if no matches.
 	 */
 	private static function get_blog_ids() {
@@ -289,7 +284,8 @@ class Pilau_Course_Management {
 	/**
 	 * Fired for each blog when the plugin is activated.
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	private static function single_activate() {
 
@@ -319,7 +315,8 @@ class Pilau_Course_Management {
 	/**
 	 * Fired for each blog when the plugin is deactivated.
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	private static function single_deactivate() {
 
@@ -341,7 +338,8 @@ class Pilau_Course_Management {
 	/**
 	 * Load the plugin text domain for translation.
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public function load_plugin_textdomain() {
 
@@ -355,7 +353,8 @@ class Pilau_Course_Management {
 	/**
 	 * Initialize admin
 	 *
-	 * @since     0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public function admin_init() {
 
@@ -369,7 +368,8 @@ class Pilau_Course_Management {
 	/**
 	 * Process admin actions
 	 *
-	 * @since     0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public function admin_processing() {
 		$redirect = null;
@@ -626,7 +626,6 @@ class Pilau_Course_Management {
 	 * Register and enqueue admin-specific style sheet.
 	 *
 	 * @since     0.1
-	 *
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_styles() {
@@ -643,7 +642,6 @@ class Pilau_Course_Management {
 	 * Register and enqueue admin-specific JavaScript.
 	 *
 	 * @since     0.1
-	 *
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
@@ -677,6 +675,7 @@ class Pilau_Course_Management {
 	 * Register and enqueue public-facing style sheet.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'css/public.css', __FILE__ ), array(), self::VERSION );
@@ -686,6 +685,7 @@ class Pilau_Course_Management {
 	 * Register and enqueues public-facing JavaScript files.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
@@ -695,6 +695,7 @@ class Pilau_Course_Management {
 	 * Register the administration menus for this plugin
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function admin_menus() {
 
@@ -774,7 +775,6 @@ class Pilau_Course_Management {
 	 *
 	 * @since	0.3
 	 * @return	void
-	 * user_profile_output
 	 */
 	public function user_profile_output() {
 
@@ -790,6 +790,7 @@ class Pilau_Course_Management {
 	 * Render the settings page for this plugin.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
@@ -799,6 +800,7 @@ class Pilau_Course_Management {
 	 * Render the send invitations page for this plugin.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function send_invitations_admin_page() {
 		include_once( 'views/send-invitations.php' );
@@ -808,6 +810,7 @@ class Pilau_Course_Management {
 	 * Render the add bookings page for this plugin.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function add_bookings_admin_page() {
 		include_once( 'views/add-bookings.php' );
@@ -817,6 +820,7 @@ class Pilau_Course_Management {
 	 * Render the bookings management page for this plugin.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function manage_bookings_admin_page() {
 		include_once( 'views/manage-bookings.php' );
@@ -826,6 +830,7 @@ class Pilau_Course_Management {
 	 * Render the email notifications page for this plugin.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function email_notifications_admin_page() {
 		include_once( 'views/email-notifications.php' );
@@ -835,6 +840,7 @@ class Pilau_Course_Management {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    0.1
+	 * @return	void
 	 */
 	public function add_action_links( $links ) {
 
@@ -851,6 +857,7 @@ class Pilau_Course_Management {
 	 * Output Developer's Custom Fields dependency notice
 	 *
 	 * @since	0.1
+	 * @return	void
 	 */
 	public function output_dcf_dependency_notice() {
 		echo '<div class="error"><p>' . __( 'The Pilau Course Management plugin depends on the <a href="http://wordpress.org/plugins/developers-custom-fields/">Developer\'s Custom Fields</a> plugin, which isn\'t currently activated', $this->plugin_slug ) . '</p></div>';
@@ -859,7 +866,8 @@ class Pilau_Course_Management {
 	/**
 	 * Custom rewrite rules
 	 *
-	 * @since		0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public static function custom_rewrite_rules() {
 
@@ -935,6 +943,7 @@ class Pilau_Course_Management {
 	 *
 	 * @since	0.1
 	 * @param	string	$post_type
+	 * @return	array
 	 */
 	protected function post_type_args( $post_type ) {
 		$args = array();
@@ -1022,7 +1031,8 @@ class Pilau_Course_Management {
 	/**
 	 * Register post types
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public function register_post_types() {
 
@@ -1037,6 +1047,7 @@ class Pilau_Course_Management {
 	 *
 	 * @since	0.1
 	 * @param	string	$box_id
+	 * @return	array
 	 */
 	protected function custom_fields_box_args( $box_id ) {
 		$args = array();
@@ -1190,7 +1201,8 @@ class Pilau_Course_Management {
 	/**
 	 * Register custom fields
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	array
 	 */
 	public function register_custom_fields() {
 
@@ -1207,7 +1219,13 @@ class Pilau_Course_Management {
 	 *
 	 * This enables easier selection of lessons with no associated course
 	 *
-	 * @since 0.2.3
+	 * @since	0.2.3
+	 * @param	int		$value			The course ID for the lesson
+	 * @param	string	$request_type	Should be 'post'
+	 * @param	int		$object_id		The ID of the post being edited
+	 * @param	object	$object			The post object
+	 * @param	array	$field			The field details
+	 * @return	int
 	 */
 	public function no_course_lessons_id_zero( $value, $request_type, $object_id, $object, $field ) {
 
@@ -1221,7 +1239,8 @@ class Pilau_Course_Management {
 	/**
 	 * Email placeholder searches
 	 *
-	 * @since    0.1
+	 * @since	0.1
+	 * @return	void
 	 */
 	public function email_placeholder_searches() {
 
