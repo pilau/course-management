@@ -779,7 +779,7 @@ class Pilau_Course_Management {
 	public function user_profile_output() {
 
 		// Course booking details for admins
-		if ( current_user_can( 'update_core' ) ) {
+		if ( current_user_can( $this->get_cap( 'manage_bookings' ) ) ) {
 			echo '<h3>Course booking details</h3>';
 			include_once( 'views/list-bookings.php' );
 		}
