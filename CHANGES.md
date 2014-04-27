@@ -7,6 +7,7 @@
 * Added `user_has_booked_course` method.
 * Added option for non-bookable courses.
 * Added output of booking infos on user profiles for admins.
+* Changed the way user statuses are changed, and included option to regress status to pending.
 
 ## 0.2.2
 * More testing

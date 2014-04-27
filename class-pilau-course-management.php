@@ -57,6 +57,15 @@ class Pilau_Course_Management {
 	protected $plugin_screen_hook_suffix = null;
 
 	/**
+	 * Default booking statuses
+	 *
+	 * @since    0.1
+	 *
+	 * @var      string
+	 */
+	protected $booking_statuses = array( 'pending', 'approved', 'denied', 'completed' );
+
+	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
 	 *
 	 * @since     0.1
@@ -457,7 +466,7 @@ class Pilau_Course_Management {
 
 							// Action?
 							$action = null;
-							foreach ( array( 'approve', 'deny', 'complete', 'delete' ) as $possible_action ) {
+							foreach ( array( 'delete', 'new-status' ) as $possible_action ) {
 								if ( isset( $_REQUEST[ $possible_action ] ) ) {
 									$action = $possible_action;
 									break;
@@ -482,20 +491,29 @@ class Pilau_Course_Management {
 								// Go through users
 								foreach ( $bookings as $user_id => $user_bookings ) {
 									switch ( $action ) {
-										case 'approve': {
-											$this->approve_booking( $user_bookings, $user_id );
-											break;
-										}
-										case 'deny': {
-											$this->deny_booking( $user_bookings, $user_id );
-											break;
-										}
-										case 'complete': {
-											$this->complete_booking( $user_bookings, $user_id );
-											break;
-										}
 										case 'delete': {
 											$this->delete_booking( $user_bookings, $user_id );
+											break;
+										}
+										case 'new-status': {
+											switch ( $_REQUEST['new-status'] ) {
+												case 'pending': {
+													$this->set_booking_status( $user_bookings, $user_id, 'pending' );
+													break;
+												}
+												case 'approved': {
+													$this->approve_booking( $user_bookings, $user_id );
+													break;
+												}
+												case 'denied': {
+													$this->deny_booking( $user_bookings, $user_id );
+													break;
+												}
+												case 'completed': {
+													$this->complete_booking( $user_bookings, $user_id );
+													break;
+												}
+											}
 											break;
 										}
 									}
@@ -1506,6 +1524,9 @@ class Pilau_Course_Management {
 					// Settings for course
 					$course['booking_approved']	= time();
 					$course['booking_status']	= 'approved';
+					// Clear other fields in case this approval is a correction from another, incompatible status
+					$course['booking_denied']	= null;
+					$course['booking_completed']	= null;
 					$updated = true;
 					$course_bookings[] = $course;
 				}
@@ -1555,6 +1576,8 @@ class Pilau_Course_Management {
 					// Settings for course
 					$course['booking_denied']	= time();
 					$course['booking_status']	= 'denied';
+					// Clear other fields in case this approval is a correction from another, incompatible status
+					$course['booking_approved']	= null;
 					$updated = true;
 					$course_bookings[] = $course;
 				}
@@ -1619,6 +1642,57 @@ class Pilau_Course_Management {
 
 		}
 	}
+
+	/**
+	 * Set a course booking status outside the normal "status flow"
+	 *
+	 * Currently handles returning a booking to 'pending'
+	 *
+	 * @since		0.3
+	 * @param		mixed		$course_instance_id		The ID of the course instance, or array of IDs
+	 * @param		int			$user_id				The ID of the user
+	 * @param		string		$status
+	 * @return		void
+	 */
+	public function set_booking_status( $course_instance_id, $user_id, $status ) {
+		if ( current_user_can( $this->get_cap( 'manage_bookings' ) ) ) {
+
+			$updated = false;
+			if ( ! is_array( $course_instance_id ) ) {
+				$course_instance_id = array( $course_instance_id );
+			}
+			//echo '<pre>'; print_r( $course_instance_id ); echo '</pre>'; exit;
+
+			// Get user courses
+			$courses = $this->get_user_courses( $user_id );
+			//echo '<pre>'; print_r( $courses ); echo '</pre>'; exit;
+
+			// Find instance
+			foreach ( $courses as &$course ) {
+				if ( in_array( $course['course_instance_id'], $course_instance_id ) ) {
+					switch ( $status ) {
+						case 'pending':
+							$course['booking_approved']		= null;
+							$course['booking_denied']		= null;
+							$course['booking_completed']	= null;
+							$course['booking_status']		= 'pending';
+							$updated = true;
+							break;
+					}
+				}
+			}
+			//echo '<pre>'; print_r( $courses ); echo '</pre>'; exit;
+
+			if ( $updated ) {
+
+				// Update user courses
+				$this->set_user_courses( $courses, $user_id );
+
+			}
+
+		}
+	}
+
 
 	/**
 	 * Delete a course booking

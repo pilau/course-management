@@ -165,14 +165,8 @@ switch ( $pcm_mode ) {
 				<div id="message" class="updated">
 					<?php
 					switch ( $_GET['msg'] ) {
-						case 'approve':
-							echo '<p>' . __( 'Booking(s) approved.', $PCM->plugin_slug ) . '</p>';
-							break;
-						case 'deny':
-							echo '<p>' . __( 'Booking(s) denied.', $PCM->plugin_slug ) . '</p>';
-							break;
-						case 'complete':
-							echo '<p>' . __( 'Booking(s) completed.', $PCM->plugin_slug ) . '</p>';
+						case 'new-status':
+							echo '<p>' . __( 'Booking(s) status changed successfully.', $PCM->plugin_slug ) . '</p>';
 							break;
 						case 'delete':
 							echo '<p>' . __( 'Booking(s) deleted.', $PCM->plugin_slug ) . '</p>';
@@ -222,7 +216,7 @@ switch ( $pcm_mode ) {
 				<div class="filter">
 					<label for="pcm-bookings-status"><?php _e( 'Status', $PCM->plugin_slug ); ?></label>
 					<select name="status" id="pcm-bookings-status">
-						<?php foreach ( array( 'all', 'pending', 'approved', 'denied', 'completed' ) as $pcm_booking_status_name ) { ?>
+						<?php foreach ( array_merge( array( 'all' ), $PCM->booking_statuses ) as $pcm_booking_status_name ) { ?>
 							<option value="<?php echo $pcm_booking_status_name; ?>"<?php selected( $pcm_booking_status, $pcm_booking_status_name ); ?>><?php echo ucfirst( $pcm_booking_status_name ); ?></option>
 						<?php } ?>
 					</select>
@@ -331,14 +325,36 @@ switch ( $pcm_mode ) {
 						<input type="hidden" name="pcm-admin-form" value="manage-bookings">
 
 						<?php if ( current_user_can( $PCM->get_cap( 'manage_bookings' ) ) ) { ?>
+
 							<input type="submit" name="email" value="<?php _e( 'Send email to all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked">&nbsp;&nbsp;
-							<?php if ( $pcm_booking_status == 'pending' ) { ?>
-								<input type="submit" name="approve" value="<?php _e( 'Approve all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked">&nbsp;&nbsp;
-								<input type="submit" name="deny" value="<?php _e( 'Deny all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked">&nbsp;&nbsp;
-							<?php } else if ( $pcm_booking_status == 'approved' ) { ?>
-								<input type="submit" name="complete" value="<?php _e( 'Complete all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked">&nbsp;&nbsp;
-							<?php } ?>
+
 							<input type="submit" name="delete" value="<?php _e( 'Delete all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked pcm-confirm">&nbsp;&nbsp;
+
+							<?php if ( $pcm_booking_status != 'all' ) { ?>
+								<label for="pcm-new-status"><?php _e( 'New status:' ); ?></label>
+									<?php
+									$pcm_can_change_status_to = $PCM->booking_statuses;
+									if ( ( $key = array_search( $pcm_booking_status, $pcm_can_change_status_to ) ) !== false ) {
+										unset( $pcm_can_change_status_to[ $key ] );
+									}
+									if ( ! in_array( $pcm_booking_status, array( 'pending', 'denied', 'completed' ) ) && ( $key = array_search( 'approved', $pcm_can_change_status_to ) ) !== false ) {
+										unset( $pcm_can_change_status_to[ $key ] );
+									}
+									if ( $pcm_booking_status != 'approved' && ( $key = array_search( 'completed', $pcm_can_change_status_to ) ) !== false ) {
+										unset( $pcm_can_change_status_to[ $key ] );
+									}
+									if ( $pcm_booking_status == 'completed' && ( $key = array_search( 'denied', $pcm_can_change_status_to ) ) !== false ) {
+										unset( $pcm_can_change_status_to[ $key ] );
+									}
+									?>
+								<select name="new-status" id="pcm-new-status">
+									<?php foreach ( $pcm_can_change_status_to as $pcm_booking_status_name ) { ?>
+										<option value="<?php echo $pcm_booking_status_name; ?>"><?php echo ucfirst( $pcm_booking_status_name ); ?></option>
+									<?php } ?>
+								</select>&nbsp;&nbsp;
+								<input type="submit" name="change-status" value="<?php _e( 'Change all checked to this status', $PCM->plugin_slug ); ?>" class="button-primary needs-checked pcm-change-status">
+							<?php } ?>
+
 						<?php } ?>
 
 					</div>
