@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3';
+	const VERSION = '0.3.1';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -1861,8 +1861,13 @@ class Pilau_Course_Management {
 	 * @param		int			$course_instance_id
 	 * @return		bool
 	 */
-	public function is_course_bookable( $course_instance_id ) {
+	public function is_course_bookable( $course_instance_id = null ) {
 		$bookable = true;
+
+		// If no ID passed, assume we're in the loop or on a course instance page
+		if ( ! $course_instance_id ) {
+			$course_instance_id = get_the_ID();
+		}
 
 		if ( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-non-bookable', 'post', $course_instance_id ) ) {
 			$bookable = false;

@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.1
+* Added default course instance ID to `is_course_bookable` method
+
 ## 0.3
 * Made `change_user_role` public
 * Added `no_course_lessons_id_zero()`, so lessons not assigned to a course get lesson ID `0` stored, to enable easier selection of lessons with no course.
