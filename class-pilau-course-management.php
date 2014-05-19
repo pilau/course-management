@@ -2030,6 +2030,8 @@ class Pilau_Course_Management {
 
 		// Get instances with this type (excluding the one passed)
 		if ( function_exists( 'slt_cf_field_key' ) ) {
+
+			// Get instances with this type (excluding the one passed)
 			$similar_courses = get_posts( array(
 				'post_type'			=> 'pcm-course-instance',
 				'posts_per_page'	=> -1,
@@ -2042,6 +2044,12 @@ class Pilau_Course_Management {
 				),
 				'post__not_in'		=> array( $course_instance_id )
 			));
+
+			// Gather IDs
+			foreach ( $similar_courses as $similar_course ) {
+				$similar_ids[] = $similar_course->ID;
+			}
+
 		}
 
 		return $similar_ids;

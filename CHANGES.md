@@ -3,6 +3,7 @@
 ## 0.3.1
 * Added default course instance ID to `is_course_bookable` method
 * Added `get_prerequisites` method
+* Fixed bug in `get_similar_course_instances`
 
 ## 0.3
 * Made `change_user_role` public
