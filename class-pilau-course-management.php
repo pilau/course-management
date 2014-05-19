@@ -428,7 +428,7 @@ class Pilau_Course_Management {
 
 							// Approve?
 							if (	isset( $_POST['approve-booking'] ) ||
-									( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-date-end', 'post', $_POST['course-id'] ) <= date( 'Y/m/d' ) ) // retrospective bookings automatically approved
+								( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-date-end', 'post', $_POST['course-id'] ) <= date( 'Y/m/d' ) ) // retrospective bookings automatically approved
 							) {
 								$this->approve_booking( $_POST['course-id'], $_POST['user-id'], ! isset( $_POST['send-notification'] ) );
 							}
@@ -839,8 +839,8 @@ class Pilau_Course_Management {
 	/**
 	 * Add settings action link to the plugins page.
 	 *
-	 * @since    0.1
-	 * @return	void
+	 * @since	0.1
+	 * @return	array
 	 */
 	public function add_action_links( $links ) {
 
@@ -1240,7 +1240,7 @@ class Pilau_Course_Management {
 	 * Email placeholder searches
 	 *
 	 * @since	0.1
-	 * @return	void
+	 * @return	array
 	 */
 	public function email_placeholder_searches() {
 
@@ -1389,8 +1389,8 @@ class Pilau_Course_Management {
 
 		foreach ( $placeholders as $placeholder ) {
 			if (	strpos( $placeholder, 'course-' ) === false ||
-					( strpos( $placeholder, 'course-' ) !== false && strpos( $placeholder, 'course-instance' ) === false && $course_placeholders ) ||
-					( strpos( $placeholder, 'course-instance' ) !== false && $course_instance_placeholders )
+				( strpos( $placeholder, 'course-' ) !== false && strpos( $placeholder, 'course-instance' ) === false && $course_placeholders ) ||
+				( strpos( $placeholder, 'course-instance' ) !== false && $course_instance_placeholders )
 			) {
 				$available_placeholders[] = $placeholder;
 			}
@@ -1451,12 +1451,12 @@ class Pilau_Course_Management {
 	 */
 	public function default_course_end_date( $post_id, $post ) {
 		if (
-				isset( $_POST[ slt_cf_field_key( 'pcm-course-date-start' ) ] ) &&
-				(
-						! isset( $_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] ) ||
-						! $_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] ||
-						$_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] < $_POST[ slt_cf_field_key( 'pcm-course-date-start' ) ]
-				)
+			isset( $_POST[ slt_cf_field_key( 'pcm-course-date-start' ) ] ) &&
+			(
+				! isset( $_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] ) ||
+				! $_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] ||
+				$_POST[ slt_cf_field_key( 'pcm-course-date-end' ) ] < $_POST[ slt_cf_field_key( 'pcm-course-date-start' ) ]
+			)
 		) {
 			// Setting the $_POST var is a bit hacky, but works
 			// Necessary because otherwise the DCF plugin code kicks in a deletes the newly-created end date field,
@@ -2048,6 +2048,32 @@ class Pilau_Course_Management {
 	}
 
 	/**
+	 * Returns an array of course type IDs that are prerequisites for the course type(s) given
+	 *
+	 * @since		0.3.1
+	 * @param		mixed	$course_ids	The ID(s) of the course - integer or array of integers
+	 * @return		array
+	 */
+	public function get_prerequisites( $course_ids ) {
+		$prerequisites = array();
+		$course_ids = (array) $course_ids;
+
+		// Gather prerequisites
+		if ( $course_ids && function_exists( 'slt_cf_field_value' ) ) {
+			foreach ( $course_ids as $course_id ) {
+				$this_course_prerequisites = slt_cf_field_value( 'pcm-course-prerequisites', 'post', $course_id, '', '', false, false );
+				foreach ( $this_course_prerequisites as $this_course_prerequisite ) {
+					if ( ! in_array( $this_course_prerequisite, $prerequisites ) ) {
+						$prerequisites[] = $this_course_prerequisite;
+					}
+				}
+			}
+		}
+
+		return $prerequisites;
+	}
+
+	/**
 	 * Returns an array of post objects for course types that are still required
 	 * by a user to book a given course
 	 *
@@ -2083,15 +2109,7 @@ class Pilau_Course_Management {
 		}
 
 		// Get prerequisites for specified courses
-		$prerequisites = array();
-		foreach ( $course_ids as $course_id ) {
-			$this_course_prerequisites = slt_cf_field_value( 'pcm-course-prerequisites', 'post', $course_id, '', '', false, false );
-			foreach ( $this_course_prerequisites as $this_course_prerequisite ) {
-				if ( ! in_array( $this_course_prerequisite, $prerequisites ) ) {
-					$prerequisites[] = $this_course_prerequisite;
-				}
-			}
-		}
+		$prerequisites = $this->get_prerequisites( $course_ids );
 
 		if ( $prerequisites ) {
 
