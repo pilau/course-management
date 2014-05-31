@@ -4,6 +4,10 @@ A WordPress plugin providing basic, extensible functionality for managing course
 
 **NOTE:** Depends on the [Developer's Custom Fields](https://github.com/gyrus/WordPress-Developers-Custom-Fields) plugin.
 
+## Installation
+
+Note that the plugin folder should be named `course-management`. This is because if the [GitHub Updater plugin](https://github.com/afragen/github-updater) is used to update this plugin, if the folder is named something other than this, it will get deleted, and the updated plugin folder with a different name will cause the plugin to be silently deactivated.
+
 ## Filter hooks
 
 * `pcm_custom_fields_args` - Use to modify the default custom fields arguments (uses [Developer's Custom Fields](http://sltaylor.co.uk/wordpress/developers-custom-fields-docs/))
