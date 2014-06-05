@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3.1';
+	const VERSION = '0.3.2';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -655,6 +655,7 @@ class Pilau_Course_Management {
 			// Combobox where necessary
 			if ( in_array( $screen->id, array( 'pcm-course-instance_page_pcm-manage-bookings', 'pcm-course-instance_page_pcm-add-bookings' ) ) ) {
 				wp_enqueue_script( 'jquery-ui-combobox', plugins_url( 'js/jquery.ui.combobox.js', __FILE__ ), array( 'jquery', 'jquery-ui-widget', 'jquery-ui-menu', 'jquery-ui-button', 'jquery-ui-autocomplete' ), '0.1', true );
+				wp_enqueue_style( 'jquery-ui-smoothness-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.min.css', false, self::VERSION, false );
 			}
 
 			// Send invitations script

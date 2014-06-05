@@ -1,5 +1,9 @@
 # Changelog for Pilau Course Management
 
+## 0.3.2
+* Added jQuery UI theme smoothness for manage bookings
+* Added `pcm_manage_bookings_usermeta_fields` filter hook
+
 ## 0.3.1
 * Added default course instance ID to `is_course_bookable` method
 * Added `get_prerequisites` method
@@ -7,12 +11,12 @@
 
 ## 0.3
 * Made `change_user_role` public
-* Added `no_course_lessons_id_zero()`, so lessons not assigned to a course get lesson ID `0` stored, to enable easier selection of lessons with no course.
-* Added `pcm_no_course_lesson_slug` filter.
-* Added `user_has_booked_course` method.
-* Added option for non-bookable courses.
-* Added output of booking infos on user profiles for admins.
-* Changed the way user statuses are changed, and included option to regress status to pending.
+* Added `no_course_lessons_id_zero()`, so lessons not assigned to a course get lesson ID `0` stored, to enable easier selection of lessons with no course
+* Added `pcm_no_course_lesson_slug` filter
+* Added `user_has_booked_course` method
+* Added option for non-bookable courses
+* Added output of booking infos on user profiles for admins
+* Changed the way user statuses are changed, and included option to regress status to pending
 
 ## 0.2.2
 * More testing

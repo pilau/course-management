@@ -87,3 +87,7 @@ table.pcm-table a:focus {
   float: left;
   margin: 0 1.5em .5em 0;
 }
+#pcm-bookings-filters .ui-combobox button.ui-button {
+  height: 26px;
+  vertical-align: top;
+}

@@ -25,6 +25,7 @@ Note that the plugin folder should be named `course-management`. This is because
 * `pcm_users_to_book_args` - Filter arguments for getting users to list on the 'Add bookings' admin screen. You can specifiy multiple roles in the `role` argument, using an array, and the limitations of `get_users()` will be bypassed!
 * `pcm_courses_to_book_args` - Filter arguments for getting course instances to list on the 'Add bookings' admin screen.
 * `pcm_no_course_lesson_slug` - Filter the slug for lessons not associated with a course.
+* `pcm_manage_bookings_usermeta_fields` - Use to add user meta fields to be used on the manage bookings screen. An array, the field key as the key, a label as the value.
 
 ## Action hooks
 

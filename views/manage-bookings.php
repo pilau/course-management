@@ -17,6 +17,16 @@ $pcm_booking_status = isset( $_REQUEST['status'] ) ? $_REQUEST['status'] : 'pend
 $pcm_course_id = isset( $_REQUEST['course_id'] ) ? $_REQUEST['course_id'] : 0;
 $pcm_course_instance_id = isset( $_REQUEST['course_instance_id'] ) ? $_REQUEST['course_instance_id'] : 0;
 
+// Any user meta fields to be used?
+$pcm_usermeta_fields = apply_filters( 'pcm_manage_bookings_usermeta_fields', array() );
+$pcm_usermeta_selected = array();
+if ( $pcm_usermeta_fields ) {
+	// Initialize filters
+	foreach ( $pcm_usermeta_fields as $key => $label ) {
+		$pcm_usermeta_selected[ $key ] = isset( $_REQUEST[ $key ] ) ? $_REQUEST[ $key ] : '';
+	}
+}
+
 // What mode?
 if ( isset( $_REQUEST['email'] ) || ( isset( $_REQUEST['pcm-action'] ) && $_REQUEST['pcm-action'] == 'compose-email' ) ) {
 	$pcm_mode = 'send-email';
@@ -31,6 +41,21 @@ switch ( $pcm_mode ) {
 
 		// Get users
 		$pcm_users = $PCM->get_users();
+
+		// Get any user meta values
+		$pcm_usermeta_values = array();
+		if ( $pcm_usermeta_fields ) {
+			foreach ( $pcm_usermeta_fields as $key => $label ) {
+				$pcm_usermeta_values[ $key ] = $wpdb->get_col( $wpdb->prepare("
+					SELECT		DISTINCT meta_value
+					FROM		$wpdb->usermeta
+					WHERE		meta_key	= %s
+					AND 		meta_value	<> ''
+					AND 		meta_value	IS NOT NULL
+					ORDER BY	meta_value ASC
+				", $key ) );
+			}
+		}
 
 		// Get courses
 		$pcm_courses_args = array(
@@ -52,21 +77,41 @@ switch ( $pcm_mode ) {
 		$pcm_course_instances = get_posts( apply_filters( 'pcm_view_bookings_course_instance_filter_args', $pcm_course_instances_args ) );
 
 		// Build SQL for course data
-		$pcm_user_filter = $pcm_user_id ? " AND user_id = %d " : '';
+		$pcm_course_query_from = " $wpdb->usermeta AS um1 ";
+		$pcm_course_query_filters = '';
+		$pcm_course_query_prepare_vars = array();
+		if ( $pcm_user_id ) {
+			$pcm_course_query_filters = " AND um1.user_id = %d ";
+			$pcm_course_query_prepare_vars[] = $pcm_user_id;
+		}
+		if ( $pcm_usermeta_fields ) {
+			$i = 2;
+			foreach ( $pcm_usermeta_fields as $key => $label ) {
+				if ( $pcm_usermeta_selected[ $key ] ) {
+					$pcm_course_query_from .= " INNER JOIN $wpdb->usermeta AS um$i ON um1.user_id = um$i.user_id ";
+					$pcm_course_query_filters .= " AND ( um$i.meta_key = %s AND um$i.meta_value = %s ) ";
+					$pcm_course_query_prepare_vars[] = $key;
+					$pcm_course_query_prepare_vars[] = $pcm_usermeta_selected[ $key ];
+					$i++;
+				}
+			}
+		}
 		$pcm_sql = "
-			SELECT		meta_value, user_id
-			FROM		$wpdb->usermeta
-			WHERE		meta_key	= 'pcm-courses'
-			$pcm_user_filter
-			ORDER BY	umeta_id ASC
+			SELECT		um1.meta_value, um1.user_id
+			FROM		$pcm_course_query_from
+			WHERE		um1.meta_key	= 'pcm-courses'
+			$pcm_course_query_filters
+			ORDER BY	um1.umeta_id ASC
 		";
+		//echo '<pre>'; print_r( $pcm_sql ); echo '</pre>'; exit;
 
 		// Get user course details
-		if ( $pcm_user_id ) {
-			$pcm_all_user_courses = $wpdb->get_results( $wpdb->prepare( $pcm_sql, $pcm_user_id ) );
+		if ( $pcm_course_query_prepare_vars ) {
+			$pcm_all_user_courses = $wpdb->get_results( $wpdb->prepare( $pcm_sql, $pcm_course_query_prepare_vars ) );
 		} else {
 			$pcm_all_user_courses = $wpdb->get_results( $pcm_sql );
 		}
+		//echo '<pre>'; print_r( $pcm_all_user_courses ); echo '</pre>'; exit;
 
 		// Gather booking details
 		$pcm_bookings = array();
@@ -180,51 +225,70 @@ switch ( $pcm_mode ) {
 			<?php } ?>
 
 			<form action="" method="get" id="pcm-bookings-filters" class="pcm-cf">
-				<div class="filter">
-					<label for="pcm-bookings-user"><?php _e( 'User', $PCM->plugin_slug ); ?></label>
-					<select name="user_id" id="pcm-bookings-user" class="pcm-combobox">
-						<option value="0"<?php selected( $pcm_user_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
-						<?php foreach ( $pcm_users as $pcm_user ) { ?>
-							<option value="<?php echo $pcm_user->ID; ?>"<?php selected( $pcm_user_id, $pcm_user->ID ); ?>><?php echo $pcm_user->display_name; ?></option>
-						<?php } ?>
-					</select>
+				<div class="filters-main">
+					<div class="filter">
+						<label for="pcm-bookings-user"><?php _e( 'User', $PCM->plugin_slug ); ?></label>
+						<select name="user_id" id="pcm-bookings-user" class="pcm-combobox">
+							<option value="0"<?php selected( $pcm_user_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
+							<?php foreach ( $pcm_users as $pcm_user ) { ?>
+								<option value="<?php echo $pcm_user->ID; ?>"<?php selected( $pcm_user_id, $pcm_user->ID ); ?>><?php echo $pcm_user->display_name; ?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="filter">
+						<label for="pcm-bookings-course"><?php _e( 'Course', $PCM->plugin_slug ); ?></label>
+						<select name="course_id" id="pcm-bookings-course">
+							<option value="0"<?php selected( $pcm_course_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
+							<?php foreach ( $pcm_courses as $pcm_course ) { ?>
+								<option value="<?php echo $pcm_course->ID; ?>"<?php selected( $pcm_course_id, $pcm_course->ID ); ?>><?php echo apply_filters( 'the_title', $pcm_course->post_title ); ?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="filter">
+						<label for="pcm-bookings-course-instance"><?php _e( 'Instance', $PCM->plugin_slug ); ?></label>
+						<select name="course_instance_id" id="pcm-bookings-course-instance" class="pcm-combobox">
+							<option value="0"<?php selected( $pcm_course_instance_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
+							<?php foreach ( $pcm_course_instances as $pcm_course_instance ) { ?>
+								<option value="<?php echo $pcm_course_instance->ID; ?>"<?php selected( $pcm_course_instance_id, $pcm_course_instance->ID ); ?>><?php
+									echo apply_filters( 'the_title', $pcm_course_instance->post_title );
+									if ( function_exists( 'slt_cf_all_field_values' ) ) {
+										$pcm_metadata = slt_cf_all_field_values( 'post', $pcm_course_instance->ID );
+										echo ' (' . $PCM->format_course_date( $pcm_metadata['pcm-course-date-start'],$pcm_metadata['pcm-course-date-end'] ) . ')';
+									}
+									?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div class="filter">
+						<label for="pcm-bookings-status"><?php _e( 'Status', $PCM->plugin_slug ); ?></label>
+						<select name="status" id="pcm-bookings-status">
+							<?php foreach ( array_merge( array( 'all' ), $PCM->booking_statuses ) as $pcm_booking_status_name ) { ?>
+								<option value="<?php echo $pcm_booking_status_name; ?>"<?php selected( $pcm_booking_status, $pcm_booking_status_name ); ?>><?php echo ucfirst( $pcm_booking_status_name ); ?></option>
+							<?php } ?>
+						</select>
+					</div>
+					<div>
+						<input type="hidden" name="post_type" value="pcm-course-instance">
+						<input type="hidden" name="page" value="pcm-manage-bookings">
+						<input type="submit" value="Update list" class="button">
+					</div>
 				</div>
-				<div class="filter">
-					<label for="pcm-bookings-course"><?php _e( 'Course', $PCM->plugin_slug ); ?></label>
-					<select name="course_id" id="pcm-bookings-course">
-						<option value="0"<?php selected( $pcm_course_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
-						<?php foreach ( $pcm_courses as $pcm_course ) { ?>
-							<option value="<?php echo $pcm_course->ID; ?>"<?php selected( $pcm_course_id, $pcm_course->ID ); ?>><?php echo apply_filters( 'the_title', $pcm_course->post_title ); ?></option>
-						<?php } ?>
-					</select>
-				</div>
-				<div class="filter">
-					<label for="pcm-bookings-course-instance"><?php _e( 'Instance', $PCM->plugin_slug ); ?></label>
-					<select name="course_instance_id" id="pcm-bookings-course-instance" class="pcm-combobox">
-						<option value="0"<?php selected( $pcm_course_instance_id, 0 ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
-						<?php foreach ( $pcm_course_instances as $pcm_course_instance ) { ?>
-							<option value="<?php echo $pcm_course_instance->ID; ?>"<?php selected( $pcm_course_instance_id, $pcm_course_instance->ID ); ?>><?php
-								echo apply_filters( 'the_title', $pcm_course_instance->post_title );
-								if ( function_exists( 'slt_cf_all_field_values' ) ) {
-									$pcm_metadata = slt_cf_all_field_values( 'post', $pcm_course_instance->ID );
-									echo ' (' . $PCM->format_course_date( $pcm_metadata['pcm-course-date-start'],$pcm_metadata['pcm-course-date-end'] ) . ')';
-								}
-								?></option>
-						<?php } ?>
-					</select>
-				</div>
-				<div class="filter">
-					<label for="pcm-bookings-status"><?php _e( 'Status', $PCM->plugin_slug ); ?></label>
-					<select name="status" id="pcm-bookings-status">
-						<?php foreach ( array_merge( array( 'all' ), $PCM->booking_statuses ) as $pcm_booking_status_name ) { ?>
-							<option value="<?php echo $pcm_booking_status_name; ?>"<?php selected( $pcm_booking_status, $pcm_booking_status_name ); ?>><?php echo ucfirst( $pcm_booking_status_name ); ?></option>
-						<?php } ?>
-					</select>
-				</div>
-				<div>
-					<input type="hidden" name="post_type" value="pcm-course-instance">
-					<input type="hidden" name="page" value="pcm-manage-bookings">
-					<input type="submit" value="Update list" class="button">
+				<div class="filters-usermeta">
+					<?php
+					foreach ( $pcm_usermeta_fields as $key => $label ) {
+						?>
+						<div class="filter">
+							<label for="<?php echo $key; ?>"><?php echo $label; ?></label>
+							<select name="<?php echo $key; ?>" id="pcm-bookings-<?php echo $key; ?>"<?php if ( count( $pcm_usermeta_values[ $key ] ) > 25 ) echo ' class="pcm-combobox"'; ?>>
+								<option value=""<?php selected( $pcm_usermeta_selected[ $key ], '' ); ?>><?php _e( 'All', $PCM->plugin_slug ) ?></option>
+								<?php foreach ( $pcm_usermeta_values[ $key ] as $pcm_usermeta_value ) { ?>
+									<option value="<?php echo $pcm_usermeta_value; ?>"<?php selected( $pcm_usermeta_selected[ $key ], $pcm_usermeta_value ); ?>><?php echo $pcm_usermeta_value; ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<?php
+					}
+					?>
 				</div>
 			</form>
 
@@ -237,6 +301,13 @@ switch ( $pcm_mode ) {
 						<tr>
 							<?php if ( ! $pcm_user_id ) { ?>
 								<th scope="col"><?php _e( 'User', $PCM->plugin_slug ); ?></th>
+							<?php } ?>
+							<?php if ( $pcm_usermeta_fields ) { ?>
+								<?php foreach ( $pcm_usermeta_fields as $key => $label ) { ?>
+									<?php if ( ! $pcm_usermeta_selected[ $key ] ) { ?>
+										<th scope="col"><?php echo $label; ?></th>
+									<?php } ?>
+								<?php } ?>
 							<?php } ?>
 							<?php if ( ! $pcm_course_id ) { ?>
 								<th scope="col"><?php _e( 'Course', $PCM->plugin_slug ); ?></th>
@@ -264,6 +335,7 @@ switch ( $pcm_mode ) {
 							<?php
 
 							$pcm_userinfo = get_userdata( $pcm_booking['user_id'] );
+							$pcm_usermeta = get_user_meta( $pcm_booking['user_id'] );
 
 							// Format: {course_instance_id}|{user_id}
 							$pcm_item_id = $pcm_booking['details']['course_instance_id'] . '|' . $pcm_booking['user_id'];
@@ -273,6 +345,13 @@ switch ( $pcm_mode ) {
 							<tr class="<?php if ( $alt ) echo 'alt'; ?>">
 								<?php if ( ! $pcm_user_id ) { ?>
 									<td><?php echo $pcm_userinfo->display_name; ?></td>
+								<?php } ?>
+								<?php if ( $pcm_usermeta_fields ) { ?>
+									<?php foreach ( $pcm_usermeta_fields as $key => $label ) { ?>
+										<?php if ( ! $pcm_usermeta_selected[ $key ] ) { ?>
+											<td><?php echo $pcm_usermeta[ $key ][0]; ?></td>
+										<?php } ?>
+									<?php } ?>
 								<?php } ?>
 								<?php if ( ! $pcm_course_id ) { ?>
 									<td><?php echo $this->multiple_post_titles( $pcm_booking['details']['course_id'] ); ?></td>
