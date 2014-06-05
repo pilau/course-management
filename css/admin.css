@@ -91,3 +91,6 @@ table.pcm-table a:focus {
   height: 26px;
   vertical-align: top;
 }
+#pcm-bookings-filters div.filters-usermeta {
+  clear: both;
+}
