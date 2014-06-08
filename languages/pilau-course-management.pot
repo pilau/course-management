@@ -1,0 +1,430 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Pilau Course Management\n"
+"POT-Creation-Date: 2014-06-08 21:30-0000\n"
+"PO-Revision-Date: 2014-06-08 21:30-0000\n"
+"Last-Translator: Steve Taylor <steve@sltaylor.co.uk>\n"
+"Language-Team: Pilau <pilaubase@gmail.com>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../class-pilau-course-management.php:395
+msgid "You have been invited to"
+msgstr ""
+
+#: ../class-pilau-course-management.php:716
+#: ../class-pilau-course-management.php:717 ../views/send-invitations.php:90
+msgid "Send invitations"
+msgstr ""
+
+#: ../class-pilau-course-management.php:726
+#: ../class-pilau-course-management.php:727
+msgid "Add bookings"
+msgstr ""
+
+#: ../class-pilau-course-management.php:736
+#: ../class-pilau-course-management.php:737
+msgid "Manage bookings"
+msgstr ""
+
+#: ../class-pilau-course-management.php:736
+#: ../class-pilau-course-management.php:737
+msgid "View bookings"
+msgstr ""
+
+#: ../class-pilau-course-management.php:746
+#: ../class-pilau-course-management.php:747
+msgid "Email notifications"
+msgstr ""
+
+#: ../class-pilau-course-management.php:850
+msgid "Settings"
+msgstr ""
+
+#: ../class-pilau-course-management.php:864
+msgid ""
+"The Pilau Course Management plugin depends on the <a href=\"http://wordpress."
+"org/plugins/developers-custom-fields/\">Developer's Custom Fields</a> "
+"plugin, which isn't currently activated"
+msgstr ""
+
+#: ../class-pilau-course-management.php:958
+msgid "Courses"
+msgstr ""
+
+#: ../class-pilau-course-management.php:959 ../views/add-bookings.php:95
+#: ../views/list-bookings.php:20 ../views/manage-bookings.php:239
+#: ../views/manage-bookings.php:313
+msgid "Course"
+msgstr ""
+
+#: ../class-pilau-course-management.php:960
+#: ../class-pilau-course-management.php:984
+#: ../class-pilau-course-management.php:1008
+msgid "Add New"
+msgstr ""
+
+#: ../class-pilau-course-management.php:961
+msgid "Add New Course"
+msgstr ""
+
+#: ../class-pilau-course-management.php:962
+#: ../class-pilau-course-management.php:986
+#: ../class-pilau-course-management.php:1010
+msgid "Edit"
+msgstr ""
+
+#: ../class-pilau-course-management.php:963
+msgid "Edit Course"
+msgstr ""
+
+#: ../class-pilau-course-management.php:964
+msgid "New Course"
+msgstr ""
+
+#: ../class-pilau-course-management.php:965
+#: ../class-pilau-course-management.php:966
+msgid "View Course"
+msgstr ""
+
+#: ../class-pilau-course-management.php:967
+msgid "Search Courses"
+msgstr ""
+
+#: ../class-pilau-course-management.php:968
+msgid "No Courses found"
+msgstr ""
+
+#: ../class-pilau-course-management.php:969
+msgid "No Courses found in Trash"
+msgstr ""
+
+#: ../class-pilau-course-management.php:982
+msgid "Course instances"
+msgstr ""
+
+#: ../class-pilau-course-management.php:983
+msgid "Course instance"
+msgstr ""
+
+#: ../class-pilau-course-management.php:985
+msgid "Add New Course instance"
+msgstr ""
+
+#: ../class-pilau-course-management.php:987
+msgid "Edit Course instance"
+msgstr ""
+
+#: ../class-pilau-course-management.php:988
+msgid "New Course instance"
+msgstr ""
+
+#: ../class-pilau-course-management.php:989
+#: ../class-pilau-course-management.php:990
+msgid "View Course instance"
+msgstr ""
+
+#: ../class-pilau-course-management.php:991
+msgid "Search Course instances"
+msgstr ""
+
+#: ../class-pilau-course-management.php:992
+msgid "No Course instances found"
+msgstr ""
+
+#: ../class-pilau-course-management.php:993
+msgid "No Course instances found in Trash"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1006
+msgid "Lessons"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1007
+msgid "Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1009
+msgid "Add New Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1011
+msgid "Edit Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1012
+msgid "New Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1013
+#: ../class-pilau-course-management.php:1014
+msgid "View Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1015
+msgid "Search Lesson"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1016
+msgid "No Lessons found"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1017
+msgid "No Lessons found in Trash"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1069
+msgid ""
+"Select the course(s) that need to have been completed in order to do this "
+"course."
+msgstr ""
+
+#: ../class-pilau-course-management.php:1095
+msgid ""
+"If the title above is left blank, it will be created automatically from the "
+"details below."
+msgstr ""
+
+#: ../class-pilau-course-management.php:1118
+msgid "Check this to exclude this course from the booking system."
+msgstr ""
+
+#: ../class-pilau-course-management.php:1170
+msgid "Select the course that this lesson is part of."
+msgstr ""
+
+#: ../class-pilau-course-management.php:1400
+msgid "Available placeholders:"
+msgstr ""
+
+#: ../class-pilau-course-management.php:1836
+msgid "Booking submitted"
+msgstr ""
+
+#: ../class-pilau-course-management.php:2357
+msgid "Click to edit"
+msgstr ""
+
+#: ../class-pilau-course-management.php:2360
+msgid "Click to view"
+msgstr ""
+
+#: ../views/add-bookings.php:70
+msgid "Booking added."
+msgstr ""
+
+#: ../views/add-bookings.php:73
+msgid "There was an error with the booking."
+msgstr ""
+
+#: ../views/add-bookings.php:76
+msgid "That user already has a booking for that course."
+msgstr ""
+
+#: ../views/add-bookings.php:86 ../views/manage-bookings.php:230
+#: ../views/manage-bookings.php:303
+msgid "User"
+msgstr ""
+
+#: ../views/add-bookings.php:110
+msgid "Approve booking"
+msgstr ""
+
+#: ../views/add-bookings.php:114
+msgid "Send email notifications"
+msgstr ""
+
+#: ../views/add-bookings.php:120
+msgid "Add booking"
+msgstr ""
+
+#: ../views/email-notifications.php:24
+msgid "Settings updated."
+msgstr ""
+
+#: ../views/email-notifications.php:33
+msgid "Booking alert"
+msgstr ""
+
+#: ../views/email-notifications.php:37
+msgid "Send notification when a booking is made"
+msgstr ""
+
+#: ../views/email-notifications.php:41
+msgid "Send to email address"
+msgstr ""
+
+#: ../views/list-bookings.php:21 ../views/manage-bookings.php:248
+#: ../views/manage-bookings.php:316
+msgid "Instance"
+msgstr ""
+
+#: ../views/list-bookings.php:22
+msgid "Course date"
+msgstr ""
+
+#: ../views/list-bookings.php:23 ../views/manage-bookings.php:319
+msgid "Submitted"
+msgstr ""
+
+#: ../views/list-bookings.php:24
+msgid "Approved"
+msgstr ""
+
+#: ../views/list-bookings.php:25
+msgid "Completed"
+msgstr ""
+
+#: ../views/list-bookings.php:26 ../views/manage-bookings.php:263
+#: ../views/manage-bookings.php:321
+msgid "Status"
+msgstr ""
+
+#: ../views/list-bookings.php:64
+msgid "Currently there are no bookings for this user."
+msgstr ""
+
+#: ../views/manage-bookings.php:185
+msgid "Regarding your CfHE booking"
+msgstr ""
+
+#: ../views/manage-bookings.php:214
+msgid "Booking(s) status changed successfully."
+msgstr ""
+
+#: ../views/manage-bookings.php:217
+msgid "Booking(s) deleted."
+msgstr ""
+
+#: ../views/manage-bookings.php:220
+msgid "Email(s) sent."
+msgstr ""
+
+#: ../views/manage-bookings.php:232 ../views/manage-bookings.php:241
+#: ../views/manage-bookings.php:250 ../views/manage-bookings.php:283
+msgid "All"
+msgstr ""
+
+#: ../views/manage-bookings.php:318
+msgid "Date"
+msgstr ""
+
+#: ../views/manage-bookings.php:324
+msgid "Actions"
+msgstr ""
+
+#: ../views/manage-bookings.php:326
+msgid "Select all"
+msgstr ""
+
+#: ../views/manage-bookings.php:376 ../views/send-invitations.php:78
+msgid "Email"
+msgstr ""
+
+#: ../views/manage-bookings.php:378
+msgid "Approve"
+msgstr ""
+
+#: ../views/manage-bookings.php:379
+msgid "Deny"
+msgstr ""
+
+#: ../views/manage-bookings.php:381
+msgid "Complete"
+msgstr ""
+
+#: ../views/manage-bookings.php:383
+msgid "Delete"
+msgstr ""
+
+#: ../views/manage-bookings.php:390
+msgid "Select this booking"
+msgstr ""
+
+#: ../views/manage-bookings.php:408
+msgid "Send email to all checked"
+msgstr ""
+
+#: ../views/manage-bookings.php:410
+msgid "Delete all checked"
+msgstr ""
+
+#: ../views/manage-bookings.php:413
+msgid "New status:"
+msgstr ""
+
+#: ../views/manage-bookings.php:434
+msgid "Change all checked to this status"
+msgstr ""
+
+#: ../views/manage-bookings.php:445
+msgid "No bookings match the criteria."
+msgstr ""
+
+#: ../views/manage-bookings.php:455
+msgid "Compose email"
+msgstr ""
+
+#: ../views/manage-bookings.php:460
+msgid "This email will be sent to the following recipients:"
+msgstr ""
+
+#: ../views/manage-bookings.php:465
+msgid "Subject"
+msgstr ""
+
+#: ../views/manage-bookings.php:470
+msgid "Message"
+msgstr ""
+
+#: ../views/manage-bookings.php:481
+msgid "Send email"
+msgstr ""
+
+#: ../views/send-invitations.php:39
+msgid "The invitations have been successfully sent."
+msgstr ""
+
+#: ../views/send-invitations.php:42
+msgid "Please enter some invitees to send the invitation to."
+msgstr ""
+
+#: ../views/send-invitations.php:45
+msgid "The template has been updated."
+msgstr ""
+
+#: ../views/send-invitations.php:57
+msgid "Select course"
+msgstr ""
+
+#: ../views/send-invitations.php:73
+msgid "Invite list"
+msgstr ""
+
+#: ../views/send-invitations.php:76
+msgid "Name"
+msgstr ""
+
+#: ../views/send-invitations.php:80
+msgid "Add invitee"
+msgstr ""
+
+#: ../views/send-invitations.php:97
+msgid "Invitation email template"
+msgstr ""
+
+#: ../views/send-invitations.php:102
+msgid "Template copy"
+msgstr ""
+
+#: ../views/send-invitations.php:110
+msgid "Update template"
+msgstr ""
