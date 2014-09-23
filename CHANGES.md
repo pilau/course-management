@@ -4,6 +4,7 @@
 * Added jQuery UI theme smoothness for manage bookings
 * Added `pcm_manage_bookings_usermeta_fields` filter hook
 * Added POT file for translations
+* `pcm_course` now hierarchical to allow manual ordering
 
 ## 0.3.1
 * Added default course instance ID to `is_course_bookable` method

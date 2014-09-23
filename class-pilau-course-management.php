@@ -970,6 +970,7 @@ class Pilau_Course_Management {
 					),
 					'public'			=> false,
 					'show_ui'			=> true,
+					'hierarchical'      => true,
 					'supports'			=> array( 'title', 'editor', 'custom-fields', 'thumbnail', 'revisions' ),
 				);
 				break;
