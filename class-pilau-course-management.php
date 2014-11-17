@@ -1130,10 +1130,24 @@ class Pilau_Course_Management {
 							'capabilities'		=> array( 'edit_posts', 'edit_pages' )
 						),
 						array(
+							'name'				=> 'pcm-course-time-start',
+							'label'				=> 'Start time',
+							'type'				=> 'time',
+							'scope'				=> array( 'pcm-course-instance' ),
+							'capabilities'		=> array( 'edit_posts', 'edit_pages' )
+						),
+						array(
 							'name'				=> 'pcm-course-date-end',
 							'label'				=> 'End date',
 							'type'				=> 'date',
 							'datepicker_format'	=> 'yy/mm/dd', // Formatted for easy sorting
+							'scope'				=> array( 'pcm-course-instance' ),
+							'capabilities'		=> array( 'edit_posts', 'edit_pages' )
+						),
+						array(
+							'name'				=> 'pcm-course-time-end',
+							'label'				=> 'End time',
+							'type'				=> 'time',
 							'scope'				=> array( 'pcm-course-instance' ),
 							'capabilities'		=> array( 'edit_posts', 'edit_pages' )
 						),

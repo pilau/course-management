@@ -2,6 +2,7 @@
 
 ## 0.3.3
 * Added filters for rewrites and permalinks
+* Added start and end time for course instances
 
 ## 0.3.2
 * Added jQuery UI theme smoothness for manage bookings
