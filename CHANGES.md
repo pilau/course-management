@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.3
+* Added filters for rewrites and permalinks
+
 ## 0.3.2
 * Added jQuery UI theme smoothness for manage bookings
 * Added `pcm_manage_bookings_usermeta_fields` filter hook

@@ -26,6 +26,11 @@ Note that the plugin folder should be named `course-management`. This is because
 * `pcm_courses_to_book_args` - Filter arguments for getting course instances to list on the 'Add bookings' admin screen.
 * `pcm_no_course_lesson_slug` - Filter the slug for lessons not associated with a course.
 * `pcm_manage_bookings_usermeta_fields` - Use to add user meta fields to be used on the manage bookings screen. An array, the field key as the key, a label as the value.
+* `pcm_lesson_rewrite_regex` - Filter the rewrite regex for lessons (should be hooked before `init` priority 10)
+* `pcm_lesson_rewrite_redirect` - Filter the redirect regex for lessons (should be hooked before `init` priority 10)
+* `pcm_course_rewrite_regex` - Filter the rewrite regex for courses (should be hooked before `init` priority 10)
+* `pcm_course_rewrite_redirect` - Filter the redirect regex for courses (should be hooked before `init` priority 10)
+ (should be hooked before `post_type_link` priority 10)
 
 ## Action hooks
 

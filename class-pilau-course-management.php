@@ -879,15 +879,15 @@ class Pilau_Course_Management {
 
 		// Lessons rewrite
 		add_rewrite_rule(
-			'^lessons/([a-zA-Z0-9\-]*)/([^/]*)/?$', // lessons/{coursename}/{lessonname}/
-			'index.php?post_type=pcm-lesson&name=$matches[2]&coursename=$matches[1]',
+			apply_filters( 'pcm_lesson_rewrite_regex', '^lessons/([a-zA-Z0-9\-]*)/([^/]*)/?$' ), // lessons/{coursename}/{lessonname}/
+			apply_filters( 'pcm_lesson_rewrite_redirect', 'index.php?post_type=pcm-lesson&name=$matches[2]&coursename=$matches[1]' ),
 			'bottom'
 		);
 
 		// Courses rewrite
 		add_rewrite_rule(
-			'^courses/([0-9]{4})/([0-9]{2})/([^/]*)/?$', // courses/{courseyear}/{coursemonth}/{coursename}
-			'index.php?post_type=pcm-course-instance&name=$matches[3]&courseyear=$matches[1]&coursemonth=$matches[2]',
+			apply_filters( 'pcm_course_rewrite_regex', '^courses/([0-9]{4})/([0-9]{2})/([^/]*)/?$' ), // courses/{courseyear}/{coursemonth}/{coursename}
+			apply_filters( 'pcm_course_rewrite_redirect', 'index.php?post_type=pcm-course-instance&name=$matches[3]&courseyear=$matches[1]&coursemonth=$matches[2]' ),
 			'bottom'
 		);
 
