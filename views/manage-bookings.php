@@ -286,7 +286,7 @@ switch ( $pcm_mode ) {
 								<?php } ?>
 							</select>
 						</div>
-						<?php
+					<?php
 					}
 					?>
 				</div>
@@ -364,7 +364,7 @@ switch ( $pcm_mode ) {
 									if ( $pcm_booking['details']['course_date_start'] != $pcm_booking['details']['course_date_end'] ) {
 										echo ' &#150; ' . implode( '/', array_reverse( explode( '/', $pcm_booking['details']['course_date_end'] ) ) );
 									}
-								?></td>
+									?></td>
 								<td><?php echo date( 'd/m/Y', $pcm_booking['details']['booking_submitted'] ); ?></td>
 								<?php if ( $pcm_booking_status == 'all' ) { ?>
 									<td><?php echo $pcm_booking['details']['booking_status']; ?></td>
@@ -407,12 +407,14 @@ switch ( $pcm_mode ) {
 
 							<input type="submit" name="email" value="<?php _e( 'Send email to all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked">&nbsp;&nbsp;
 
-							<input type="submit" name="delete" value="<?php _e( 'Delete all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked pcm-confirm">&nbsp;&nbsp;
+							<input type="submit" name="delete" value="<?php _e( 'Delete all checked', $PCM->plugin_slug ); ?>" class="button-primary needs-checked pcm-confirm">&nbsp;&nbsp;&nbsp;&nbsp;
 
 							<?php if ( $pcm_booking_status != 'all' ) { ?>
 								<label for="pcm-new-status"><?php _e( 'New status:' ); ?></label>
-									<?php
-									$pcm_can_change_status_to = $PCM->booking_statuses;
+								<?php
+								// If not admin, narrow down possible statuses that can be switched to
+								$pcm_can_change_status_to = $PCM->booking_statuses;
+								if ( ! current_user_can( 'update_core' ) ) {
 									if ( ( $key = array_search( $pcm_booking_status, $pcm_can_change_status_to ) ) !== false ) {
 										unset( $pcm_can_change_status_to[ $key ] );
 									}
@@ -425,13 +427,15 @@ switch ( $pcm_mode ) {
 									if ( $pcm_booking_status == 'completed' && ( $key = array_search( 'denied', $pcm_can_change_status_to ) ) !== false ) {
 										unset( $pcm_can_change_status_to[ $key ] );
 									}
-									?>
+								}
+								?>
 								<select name="new-status" id="pcm-new-status">
 									<?php foreach ( $pcm_can_change_status_to as $pcm_booking_status_name ) { ?>
 										<option value="<?php echo $pcm_booking_status_name; ?>"><?php echo ucfirst( $pcm_booking_status_name ); ?></option>
 									<?php } ?>
 								</select>&nbsp;&nbsp;
 								<input type="submit" name="change-status" value="<?php _e( 'Change all checked to this status', $PCM->plugin_slug ); ?>" class="button-primary needs-checked pcm-change-status">
+								&nbsp;&nbsp;<label for="pcm-suppress-notifications"><input type="checkbox" name="suppress-notifications" id="pcm-suppress-notifications" value="1"> <?php _e( 'Suppress notifications', $PCM->plugin_slug ); ?></label>
 							<?php } ?>
 
 						<?php } ?>
@@ -486,5 +490,5 @@ switch ( $pcm_mode ) {
 			<?php break; ?>
 
 		<?php } ?>
-	<?php } ?>
+		<?php } ?>
 </div>

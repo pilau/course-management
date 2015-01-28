@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3.3';
+	const VERSION = '0.3.4';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -502,15 +502,15 @@ class Pilau_Course_Management {
 													break;
 												}
 												case 'approved': {
-													$this->approve_booking( $user_bookings, $user_id );
+													$this->approve_booking( $user_bookings, $user_id, isset( $_REQUEST['suppress-notifications'] ) );
 													break;
 												}
 												case 'denied': {
-													$this->deny_booking( $user_bookings, $user_id );
+													$this->deny_booking( $user_bookings, $user_id, isset( $_REQUEST['suppress-notifications'] ) );
 													break;
 												}
 												case 'completed': {
-													$this->complete_booking( $user_bookings, $user_id );
+													$this->complete_booking( $user_bookings, $user_id, isset( $_REQUEST['suppress-notifications'] ) );
 													break;
 												}
 											}

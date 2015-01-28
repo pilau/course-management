@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.4
+* Added options for admins to change any status to any status, and optionally suppress notifications
+
 ## 0.3.3
 * Fixed bug which sees 'send email' on Manage Bookings as 'change status'
 * Added filters for rewrites and permalinks

@@ -11,7 +11,7 @@
  * @wordpress-plugin
  * Plugin Name:			Pilau Course Management
  * Description:			Basic, extensible functionality for managing courses.
- * Version:				0.3.3
+ * Version:				0.3.4
  * Author:				Steve Taylor
  * Text Domain:			pilau-course-management-locale
  * License:				GPL-2.0+
