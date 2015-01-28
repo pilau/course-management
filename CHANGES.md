@@ -1,6 +1,7 @@
 # Changelog for Pilau Course Management
 
 ## 0.3.3
+* Fixed bug which sees 'send email' on Manage Bookings as 'change status'
 * Added filters for rewrites and permalinks
 * Added start and end time for course instances
 
