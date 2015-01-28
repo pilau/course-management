@@ -466,7 +466,7 @@ class Pilau_Course_Management {
 
 							// Action?
 							$action = null;
-							foreach ( array( 'delete', 'new-status' ) as $possible_action ) {
+							foreach ( array( 'delete', 'change-status' ) as $possible_action ) {
 								if ( isset( $_REQUEST[ $possible_action ] ) ) {
 									$action = $possible_action;
 									break;
@@ -495,7 +495,7 @@ class Pilau_Course_Management {
 											$this->delete_booking( $user_bookings, $user_id );
 											break;
 										}
-										case 'new-status': {
+										case 'change-status': {
 											switch ( $_REQUEST['new-status'] ) {
 												case 'pending': {
 													$this->set_booking_status( $user_bookings, $user_id, 'pending' );
@@ -1834,10 +1834,10 @@ class Pilau_Course_Management {
 					// Email notification?
 					$email_notifications = get_option( 'pcm_email_notifications' );
 					if (	isset( $email_notifications['booking-alert'] ) && $email_notifications['booking-alert'] &&
-							isset( $email_notifications['booking-email'] ) && $email_notifications['booking-email'] &&
-							function_exists( 'slt_cf_reverse_date' ) &&
-							! $suppress_notification &&
-							! $retrospective_booking
+						isset( $email_notifications['booking-email'] ) && $email_notifications['booking-email'] &&
+						function_exists( 'slt_cf_reverse_date' ) &&
+						! $suppress_notification &&
+						! $retrospective_booking
 					) {
 						$userdata = get_userdata( $user_id );
 
