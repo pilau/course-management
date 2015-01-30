@@ -543,11 +543,19 @@ class Pilau_Course_Management {
 								// Get user
 								$userdata = get_userdata( $recipient );
 
+								// Attachment
+								$attachments = array();
+								if ( ! empty( $_POST['email-attachment'] ) && $attachment_path = get_attached_file( $_POST['email-attachment'] ) ) {
+									$attachments[] = $attachment_path;
+								}
+
 								// Send email
 								wp_mail(
 									$userdata->display_name . ' <'  . $userdata->user_email . '>',
 									'[' . get_bloginfo( 'name' ) . '] ' . $_POST['email-subject'],
-									$this->parse_email_placeholders( $this->undo_magic_quotes( $_POST['email-message'] ), $course_instance_id, $userdata, null, $course_id )
+									$this->parse_email_placeholders( $this->undo_magic_quotes( $_POST['email-message'] ), $course_instance_id, $userdata, null, $course_id ),
+									'',
+									$attachments
 								);
 
 							}
@@ -582,7 +590,7 @@ class Pilau_Course_Management {
 
 			}
 
-		} else if ( isset( $_REQUEST['pcm-action'] ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'pcm-admin-action' ) ) {
+		} else if ( isset( $_REQUEST['pcm-action'] ) && in_array( $_REQUEST['pcm-action'], array( 'approve', 'deny', 'complete', 'delete' ) ) && wp_verify_nonce( $_REQUEST['_wpnonce'], 'pcm-admin-action' ) ) {
 
 			// A URL-based action
 			if ( current_user_can( $this->get_cap( 'manage_bookings' ) ) ) {
@@ -663,9 +671,16 @@ class Pilau_Course_Management {
 				wp_enqueue_script( $this->plugin_slug . '-send-invitations-script', plugins_url( 'js/admin-send-invitations.js', __FILE__ ), array( 'jquery', $this->plugin_slug . '-admin-script' ), self::VERSION, true );
 			}
 
-			// Manage bookings script
 			if ( $screen->id == 'pcm-course-instance_page_pcm-manage-bookings' ) {
+
+				// Manage bookings script
 				wp_enqueue_script( $this->plugin_slug . '-manage-bookings-script', plugins_url( 'js/admin-manage-bookings.js', __FILE__ ), array( 'jquery', $this->plugin_slug . '-admin-script', 'jquery-ui-combobox' ), self::VERSION, true );
+
+				// File selection if available, for email attachments
+				if ( ! empty( $_REQUEST['pcm-action'] ) && $_REQUEST['pcm-action'] == 'compose-email' && function_exists( 'slt_cf_file_select_button_enqueue' ) ) {
+					slt_cf_file_select_button_enqueue();
+				}
+
 			}
 
 		}

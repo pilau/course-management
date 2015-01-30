@@ -476,6 +476,13 @@ switch ( $pcm_mode ) {
 					<p class="description"><?php $PCM->available_email_placeholders( (boolean) $pcm_course_id, (boolean) $pcm_course_instance_id ); ?></p>
 				</div>
 
+				<?php if ( function_exists( 'slt_cf_file_select_button' ) ) { ?>
+					<div>
+						<h3><label for="pcm-email-attachment"><?php _e( 'Attachment', $PCM->plugin_slug ) ?></label></h3>
+						<?php slt_cf_file_select_button( 'email-attachment', 0, __( 'Select file', $PCM->plugin_slug ), 'thumbnail', false, false  ); ?>
+					</div>
+				<?php } ?>
+
 				<div class="buttons">
 					<?php wp_nonce_field( 'send-bookings-email' ); ?>
 					<input type="hidden" name="pcm-admin-form" value="send-bookings-email">

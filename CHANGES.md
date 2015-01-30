@@ -1,6 +1,7 @@
 # Changelog for Pilau Course Management
 
 ## 0.3.4
+* Added option to send an attachment with emails
 * Added options for admins to change any status to any status, and optionally suppress notifications
 
 ## 0.3.3
