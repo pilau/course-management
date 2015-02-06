@@ -537,6 +537,11 @@ class Pilau_Course_Management {
 							$course_id = isset( $_REQUEST['course_id'] ) ? $_REQUEST['course_id'] : 0;
 							$course_instance_id = isset( $_REQUEST['course_instance_id'] ) ? $_REQUEST['course_instance_id'] : 0;
 
+							// HTML?
+							if ( $_POST['email-format'] == 'html' ) {
+								add_filter( 'wp_mail_content_type', array( $this, 'set_content_type_html' ) );
+							}
+
 							// Go through each recipient
 							foreach ( $recipients as $recipient ) {
 
@@ -558,6 +563,11 @@ class Pilau_Course_Management {
 									$attachments
 								);
 
+							}
+
+							// Revert to normal email content type
+							if ( $_POST['email-format'] == 'html' ) {
+								remove_filter( 'wp_mail_content_type', array( $this, 'set_content_type_html' ) );
 							}
 
 							// Pass filters through along with message
@@ -628,6 +638,15 @@ class Pilau_Course_Management {
 			wp_redirect( $redirect );
 			exit;
 		}
+	}
+
+	/**
+	 * For setting the content type of emails to HTML
+	 *
+	 * @since	0.3.4
+	 */
+	function set_content_type_html( $content_type ) {
+		return 'text/html';
 	}
 
 	/**

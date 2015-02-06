@@ -476,6 +476,12 @@ switch ( $pcm_mode ) {
 					<p class="description"><?php $PCM->available_email_placeholders( (boolean) $pcm_course_id, (boolean) $pcm_course_instance_id ); ?></p>
 				</div>
 
+				<div>
+					<h3><?php _e( 'Format', $PCM->plugin_slug ) ?></h3>
+					<label for="pcm-email-format-text"><input type="radio" name="email-format" id="pcm-email-format-text" value="text" checked> <?php _e( 'Plain text', $PCM->plugin_slug ); ?></label>&nbsp;&nbsp;
+					<label for="pcm-email-format-html"><input type="radio" name="email-format" id="pcm-email-format-html" value="html"> <?php _e( 'HTML', $PCM->plugin_slug ); ?></label>
+				</div>
+
 				<?php if ( function_exists( 'slt_cf_file_select_button' ) ) { ?>
 					<div>
 						<h3><label for="pcm-email-attachment"><?php _e( 'Attachment', $PCM->plugin_slug ) ?></label></h3>
