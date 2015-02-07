@@ -480,6 +480,7 @@ switch ( $pcm_mode ) {
 					<h3><?php _e( 'Format', $PCM->plugin_slug ) ?></h3>
 					<label for="pcm-email-format-text"><input type="radio" name="email-format" id="pcm-email-format-text" value="text" checked> <?php _e( 'Plain text', $PCM->plugin_slug ); ?></label>&nbsp;&nbsp;
 					<label for="pcm-email-format-html"><input type="radio" name="email-format" id="pcm-email-format-html" value="html"> <?php _e( 'HTML', $PCM->plugin_slug ); ?></label>
+					<p>If set to <code>HTML</code>, paragraph tags will be added automatically.</p>
 				</div>
 
 				<?php if ( function_exists( 'slt_cf_file_select_button' ) ) { ?>

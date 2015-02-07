@@ -554,18 +554,32 @@ class Pilau_Course_Management {
 									$attachments[] = $attachment_path;
 								}
 
+								// Parse placeholders in message
+								$message = $this->parse_email_placeholders( $this->undo_magic_quotes( $_POST['email-message'] ), $course_instance_id, $userdata, null, $course_id );
+
+								// If HTML...
+								if ( $_POST['email-format'] == 'html' ) {
+
+									// Do paragraphs
+									$message = wpautop( $message );
+
+									// Filter - this is where any HTML templating can be applied
+									$message = apply_filters( 'pcm_bookings_email_html', $message, $_POST['email-subject'] );
+
+								}
+
 								// Send email
 								wp_mail(
 									$userdata->display_name . ' <'  . $userdata->user_email . '>',
 									'[' . get_bloginfo( 'name' ) . '] ' . $_POST['email-subject'],
-									$this->parse_email_placeholders( $this->undo_magic_quotes( $_POST['email-message'] ), $course_instance_id, $userdata, null, $course_id ),
+									$message,
 									'',
 									$attachments
 								);
 
 							}
 
-							// Revert to normal email content type
+							// Revert to normal email content type?
 							if ( $_POST['email-format'] == 'html' ) {
 								remove_filter( 'wp_mail_content_type', array( $this, 'set_content_type_html' ) );
 							}

@@ -31,6 +31,7 @@ Note that the plugin folder should be named `course-management`. This is because
 * `pcm_course_rewrite_regex` - Filter the rewrite regex for courses (should be hooked before `init` priority 10)
 * `pcm_course_rewrite_redirect` - Filter the redirect regex for courses (should be hooked before `init` priority 10)
  (should be hooked before `post_type_link` priority 10)
+* `pcm_bookings_email_html` - Filter bookings email messages if format is set to HTML - the message should be wrapped by a HTML template using this; Args: `$message`, `$subject`
 
 ## Action hooks
 

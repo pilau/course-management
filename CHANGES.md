@@ -1,6 +1,7 @@
 # Changelog for Pilau Course Management
 
 ## 0.3.4
+* Added HTML format to bookings emails, with `pcm_bookings_email_html` filter for templating
 * Added option to send an attachment with emails
 * Added options for admins to change any status to any status, and optionally suppress notifications
 
