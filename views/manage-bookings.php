@@ -478,8 +478,9 @@ switch ( $pcm_mode ) {
 
 				<div>
 					<h3><?php _e( 'Format', $PCM->plugin_slug ) ?></h3>
-					<label for="pcm-email-format-text"><input type="radio" name="email-format" id="pcm-email-format-text" value="text" checked> <?php _e( 'Plain text', $PCM->plugin_slug ); ?></label>&nbsp;&nbsp;
-					<label for="pcm-email-format-html"><input type="radio" name="email-format" id="pcm-email-format-html" value="html"> <?php _e( 'HTML', $PCM->plugin_slug ); ?></label>
+					<?php $format_default = apply_filters( 'pcm_bookings_email_default_format', 'text' ); ?>
+					<label for="pcm-email-format-text"><input type="radio" name="email-format" id="pcm-email-format-text" value="text"<?php checked( $format_default, 'text' ); ?>> <?php _e( 'Plain text', $PCM->plugin_slug ); ?></label>&nbsp;&nbsp;
+					<label for="pcm-email-format-html"><input type="radio" name="email-format" id="pcm-email-format-html" value="html"<?php checked( $format_default, 'html' ); ?>> <?php _e( 'HTML', $PCM->plugin_slug ); ?></label>
 					<p>If set to <code>HTML</code>, paragraph tags will be added automatically.</p>
 				</div>
 
