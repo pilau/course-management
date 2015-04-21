@@ -542,17 +542,20 @@ class Pilau_Course_Management {
 								add_filter( 'wp_mail_content_type', array( $this, 'set_content_type_html' ) );
 							}
 
+							// Attachment?
+							$attachment = $attachment_path = array();
+							if (
+								( ! empty( $_POST['email-attachment'] ) && $attachment_path = get_attached_file( $_POST['email-attachment'] ) ) ||
+								( ! empty( $_POST['email-attachment-manual'] ) && $attachment_path = get_attached_file( $_POST['email-attachment-manual'] ) )
+							) {
+								$attachment = $attachment_path;
+							}
+
 							// Go through each recipient
 							foreach ( $recipients as $recipient ) {
 
 								// Get user
 								$userdata = get_userdata( $recipient );
-
-								// Attachment
-								$attachments = array();
-								if ( ! empty( $_POST['email-attachment'] ) && $attachment_path = get_attached_file( $_POST['email-attachment'] ) ) {
-									$attachments[] = $attachment_path;
-								}
 
 								// Parse placeholders in message
 								$message = $this->parse_email_placeholders( $this->undo_magic_quotes( $_POST['email-message'] ), $course_instance_id, $userdata, null, $course_id );
@@ -574,7 +577,7 @@ class Pilau_Course_Management {
 									'[' . get_bloginfo( 'name' ) . '] ' . $_POST['email-subject'],
 									$message,
 									'',
-									$attachments
+									$attachment
 								);
 
 							}

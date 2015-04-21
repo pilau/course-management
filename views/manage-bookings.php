@@ -488,6 +488,8 @@ switch ( $pcm_mode ) {
 					<div>
 						<h3><label for="pcm-email-attachment"><?php _e( 'Attachment', $PCM->plugin_slug ) ?></label></h3>
 						<?php slt_cf_file_select_button( 'email-attachment', 0, __( 'Select file', $PCM->plugin_slug ), 'thumbnail', false, false  ); ?>
+						<p class="description"><?php _e( 'If for some reason this button doesn\'t work, go to the Media Library, switch to list view if it\'s in grid view, copy the file\'s numeric ID from the column towards the left, then paste it in here:' ); ?></p>
+						<label for="pcm-email-attachment-manual"><?php _e( 'File ID:', $PCM->plugin_slug ); ?> <input type="text" name="email-attachment-manual" id="pcm-email-attachment-manual" class="regular-text"></label>
 					</div>
 				<?php } ?>
 

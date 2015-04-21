@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.5
+* Added text input fallback for email attachments
+
 ## 0.3.4
 * Added HTML format to bookings emails, with `pcm_bookings_email_html` filter for templating, and `pcm_bookings_email_default_format`
 * Added option to send an attachment with emails
