@@ -372,9 +372,13 @@ class Pilau_Course_Management {
 		}
 
 		// Merge stored user settings with defaults
+		$admin_user_settings = get_user_meta( get_current_user_id(), '_pcm_admin_user_settings', true );
+		if ( empty( $admin_user_settings ) ) {
+			$admin_user_settings = array();
+		}
 		$this->admin_user_settings = array_merge(
 			array(),
-			array_map( function( $a ) { return $a[0]; }, get_user_meta( get_current_user_id() ) )
+			$admin_user_settings
 		);
 
 	}
@@ -669,6 +673,29 @@ class Pilau_Course_Management {
 			wp_redirect( $redirect );
 			exit;
 		}
+	}
+
+	/**
+	 * Get current admin user settings
+	 *
+	 * @since	0.3.6
+	 * @return	array
+	 */
+	public function get_admin_user_settings() {
+		return $this->admin_user_settings;
+	}
+
+	/**
+	 * Set current admin user setting
+	 *
+	 * @since	0.3.6
+	 * @param	string	$key
+	 * @param	mixed	$value
+	 * @return	void
+	 */
+	public function set_admin_user_setting( $key, $value ) {
+		$this->admin_user_settings[ $key ] = $value;
+		update_user_meta( get_current_user_id(), '_pcm_admin_user_settings', $this->admin_user_settings );
 	}
 
 	/**
