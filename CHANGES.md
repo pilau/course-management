@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.6
+* Added admin user settings storage
+
 ## 0.3.5
 * Added text input fallback for email attachments
 

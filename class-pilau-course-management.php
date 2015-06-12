@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3.4';
+	const VERSION = '0.3.6';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -59,6 +59,14 @@ class Pilau_Course_Management {
 	 * @var      string
 	 */
 	protected $booking_statuses = array( 'pending', 'approved', 'denied', 'completed' );
+
+	/**
+	 * Admin user settings
+	 *
+	 * @since    0.3.6
+	 * @var      array
+	 */
+	protected $admin_user_settings = null;
 
 	/**
 	 * Initialize the plugin by setting localization, filters, and administration functions.
@@ -362,6 +370,12 @@ class Pilau_Course_Management {
 		if ( ! defined( 'SLT_CF_VERSION' ) ) {
 			add_action( 'admin_notices', array( $this, 'output_dcf_dependency_notice' ) );
 		}
+
+		// Merge stored user settings with defaults
+		$this->admin_user_settings = array_merge(
+			array(),
+			array_map( function( $a ) { return $a[0]; }, get_user_meta( get_current_user_id() ) )
+		);
 
 	}
 
