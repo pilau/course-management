@@ -1,6 +1,7 @@
 # Changelog for Pilau Course Management
 
 ## 0.3.6
+* Changed to allow lessons to be assigned to multiple courses at once
 * Added admin user settings storage
 
 ## 0.3.5

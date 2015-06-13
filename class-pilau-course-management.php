@@ -1002,7 +1002,14 @@ class Pilau_Course_Management {
 			if ( strpos( $url, '%coursename%' ) !== false ) {
 
 				// Is there a course for the lesson?
-				if ( $course_id = slt_cf_field_value( 'pcm-lesson-course', 'post', $post->ID ) ) {
+				if ( $course_id = slt_cf_field_value( 'pcm-lesson-course', 'post', $post->ID, '', '', false, false ) ) {
+					// If more than one, allow filter to decide on the one to use, or just use the first
+					if ( count( $course_id ) > 1 ) {
+						$course_id = apply_filters( 'pcm_multiple_course_lesson_which_one', $course_id );
+						if ( count( $course_id ) > 1 ) {
+							$course_id = $course_id[0];
+						}
+					}
 					$course = get_post( $course_id );
 					$course_name = $course->post_name;
 				} else {
@@ -1272,9 +1279,11 @@ class Pilau_Course_Management {
 					'fields'	=> array(
 						array(
 							'name'			=> 'pcm-lesson-course',
-							'label'			=> 'Lesson course',
+							'label'			=> 'Lesson courses',
 							'type'			=> 'select',
-							'description'	=> __( 'Select the course that this lesson is part of.', $this->plugin_slug ),
+							'description'	=> __( 'Select the courses that this lesson is part of.', $this->plugin_slug ),
+							'single'		=> false,
+							'multiple'		=> true,
 							'options_type'	=> 'posts',
 							'options_query'	=> array(
 								'post_type'			=> 'pcm-course',
@@ -1338,7 +1347,7 @@ class Pilau_Course_Management {
 	public function no_course_lessons_id_zero( $value, $request_type, $object_id, $object, $field ) {
 
 		if ( $request_type == 'post' && get_post_type( $object ) == 'pcm-lesson' && $field['name'] == 'pcm-lesson-course' && empty( $value ) ) {
-			$value = 0;
+			$value = array( 0 );
 		}
 
 		return $value;
