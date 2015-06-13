@@ -2,6 +2,7 @@
 
 ## 0.3.6
 * Added admin user settings storage
+* Added interface options for Add Bookings screen
 
 ## 0.3.5
 * Added text input fallback for email attachments
