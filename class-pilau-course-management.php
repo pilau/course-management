@@ -507,7 +507,7 @@ class Pilau_Course_Management {
 						}
 
 						// Options that need to be passed on query string
-						foreach ( array( 'users-select-date-start', 'users-select-date-end', 'courses-select-year' ) as $option ) {
+						foreach ( array( 'users-select-date-start', 'users-select-date-end', 'courses-select-year', 'courses-select-type' ) as $option ) {
 							$redirect_url = add_query_arg( $option, $_POST[ $option ], $redirect_url );
 						}
 

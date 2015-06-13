@@ -30,6 +30,10 @@ $pcm_courses_select_year = (int) date( 'Y' );
 if ( ! empty( $_REQUEST['courses-select-year'] ) ) {
 	$pcm_courses_select_year = $_REQUEST['courses-select-year'];
 }
+$pcm_courses_select_type = '';
+if ( ! empty( $_REQUEST['courses-select-type'] ) ) {
+	$pcm_courses_select_type = $_REQUEST['courses-select-type'];
+}
 
 // Default arguments for gettings users
 // pcm_* arguments are custom
@@ -77,6 +81,12 @@ if ( function_exists( 'slt_cf_field_key' ) ) {
 	$pcm_courses_to_book_args['meta_key'] = slt_cf_field_key( 'pcm-course-date-start' );
 	$pcm_courses_to_book_args['orderby'] = 'meta_value';
 	$pcm_courses_to_book_args['order'] = 'ASC';
+	if ( $pcm_courses_select_type ) {
+		$pcm_courses_to_book_args['meta_query'][] = array(
+			'key'		=> slt_cf_field_key( 'pcm-course-type' ),
+			'value'		=> $pcm_courses_select_type
+		);
+	}
 }
 $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', $pcm_courses_to_book_args ) );
 //echo '<pre>'; print_r( $pcm_courses_to_book ); echo '</pre>'; exit;
@@ -135,20 +145,6 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					</td>
 				</tr>
 				<tr>
-					<th><label for="pcm-add-bookings-users-orderby"><?php _e( 'Users ordered by', $PCM->plugin_slug ); ?></label></th>
-					<td>
-						<select name="add-bookings-users-orderby" id="pcm-add-bookings-users-orderby">
-							<option value="registered"<?php selected( $pcm_admin_user_settings['add-bookings-users-orderby'], 'registered' ); ?>><?php _e( 'Date registered', $PCM->plugin_slug ); ?></option>
-							<option value="display_name"<?php selected( $pcm_admin_user_settings['add-bookings-users-orderby'], 'display_name' ); ?>><?php _e( 'Name', $PCM->plugin_slug ); ?></option>
-						</select>
-					</td>
-				</tr>
-			</table>
-		</div>
-
-		<div style="float:left; width: 300px; margin-right:10px">
-			<table class="form-table">
-				<tr>
 					<th><label for="pcm-users-select-date-start"><?php _e( 'User registered date range start', $PCM->plugin_slug ); ?></label></th>
 					<td>
 						<input type="date" name="users-select-date-start" id="pcm-users-select-date-start" value="<?php echo $pcm_users_select_date_start; ?>" max="<?php echo date( $pcm_date_select_format ); ?>">
@@ -163,8 +159,17 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 			</table>
 		</div>
 
-		<div style="float:left; width: 300px;">
+		<div style="float:left; width: 300px; margin-right:10px">
 			<table class="form-table">
+				<tr>
+					<th><label for="pcm-add-bookings-users-orderby"><?php _e( 'Users ordered by', $PCM->plugin_slug ); ?></label></th>
+					<td>
+						<select name="add-bookings-users-orderby" id="pcm-add-bookings-users-orderby">
+							<option value="registered"<?php selected( $pcm_admin_user_settings['add-bookings-users-orderby'], 'registered' ); ?>><?php _e( 'Date registered', $PCM->plugin_slug ); ?></option>
+							<option value="display_name"<?php selected( $pcm_admin_user_settings['add-bookings-users-orderby'], 'display_name' ); ?>><?php _e( 'Name', $PCM->plugin_slug ); ?></option>
+						</select>
+					</td>
+				</tr>
 				<tr>
 					<th><label for="pcm-add-bookings-courses-multiple-select"><?php _e( 'Courses multiple selection', $PCM->plugin_slug ); ?></label></th>
 					<td>
@@ -177,6 +182,22 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 						<select name="courses-select-year" id="pcm-courses-select-year">
 							<?php for ( $y = ( ( (int) date( 'Y' ) ) + 1 ); $y >= 2008; $y-- ) { ?>
 								<option value="<?php echo $y; ?>"<?php selected( $y, $pcm_courses_select_year ); ?>><?php echo $y; ?></option>
+							<?php } ?>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<div style="float:left; width: 350px;">
+			<table class="form-table">
+				<tr>
+					<th><label for="pcm-courses-select-type"><?php _e( 'Course type', $PCM->plugin_slug ); ?></label></th>
+					<td>
+						<select name="courses-select-type" id="pcm-courses-select-type">
+							<option value=""<?php selected( '', $pcm_courses_select_type ); ?>>[<?php _e( 'All course types' ); ?>]</option>
+							<?php foreach ( $PCM->get_course_types() as $pcm_course_type ) { ?>
+								<option value="<?php echo $pcm_course_type->ID; ?>"<?php selected( $pcm_course_type->ID, $pcm_courses_select_type ); ?>><?php echo $pcm_course_type->post_title; ?></option>
 							<?php } ?>
 						</select>
 					</td>
