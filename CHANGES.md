@@ -3,6 +3,7 @@
 ## 0.3.6
 * Changed to allow lessons to be assigned to multiple courses at once
 * Added admin user settings storage
+* Added `pcm_get_course_lessons_args` filter
 
 ## 0.3.5
 * Added text input fallback for email attachments

@@ -2260,11 +2260,12 @@ class Pilau_Course_Management {
 	 * Get lessons for a course type
 	 *
 	 * @since		0.1
-	 * @param		int		$course_type_id	The ID of the course type
-	 * @param		string	$type			Lesson type
+	 * @param		int		$course_type_id		The ID of the course type
+	 * @param		string	$type					Lesson type
+	 * @param		int		$course_instance_id	The ID of the course instance, if known
 	 * @return		array
 	 */
-	public function get_course_lessons( $course_type_id, $type = 'all' ) {
+	public function get_course_lessons( $course_type_id, $type = 'all', $course_instance_id = null ) {
 		$lessons = array();
 
 		if ( function_exists( 'slt_cf_field_key' ) ) {
@@ -2290,6 +2291,9 @@ class Pilau_Course_Management {
 					'value'		=> $type
 				);
 			}
+
+			// Allow args to be filtered
+			$args = apply_filters( 'pcm_get_course_lessons_args', $args, $course_type_id, $course_instance_id );
 
 			// Get lessons
 			$lessons = get_posts( $args );
