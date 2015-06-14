@@ -115,6 +115,7 @@ class Pilau_Course_Management {
 		add_action( 'save_post_pcm-course-instance', array( $this, 'default_course_end_date' ), 10, 2 );
 		add_action( 'save_post_pcm-course-instance', array( $this, 'synch_course_booking_dates' ), 11, 2 );
 		add_action( 'slt_cf_pre_save_value', array( $this, 'no_course_lessons_id_zero' ), 11, 5 );
+		add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
 
 	}
 
@@ -377,7 +378,11 @@ class Pilau_Course_Management {
 			$admin_user_settings = array();
 		}
 		$this->admin_user_settings = array_merge(
-			array(),
+			array(
+				'add-bookings-users-multiple-select'	=> true,
+				'add-bookings-users-orderby'			=> 'registered',
+				'add-bookings-courses-multiple-select'	=> true,
+			),
 			$admin_user_settings
 		);
 
@@ -438,27 +443,76 @@ class Pilau_Course_Management {
 				case 'add-booking': {
 					if ( current_user_can( $this->get_cap( 'manage_bookings' ) ) ) {
 						$msg = 'added';
+						$problems = '';
+						$redirect = $_REQUEST['_wp_http_referer'];
 
-						// Submit booking
-						$booking = $this->submit_booking( $_POST['course-id'], $_POST['user-id'], ! isset( $_POST['send-notification'] ) );
+						// Allow for multiple or single user / course selection
+						$user_ids = is_array( $_POST['user-id'] ) ? $_POST['user-id'] : array( $_POST['user-id'] );
+						$course_ids = is_array( $_POST['course-id'] ) ? $_POST['course-id'] : array( $_POST['course-id'] );
 
-						if ( $booking === true ) {
+						// Go through users
+						foreach ( $user_ids as $user_id ) {
 
-							// Approve?
-							if (	isset( $_POST['approve-booking'] ) ||
-								( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-date-end', 'post', $_POST['course-id'] ) <= date( 'Y/m/d' ) ) // retrospective bookings automatically approved
-							) {
-								$this->approve_booking( $_POST['course-id'], $_POST['user-id'], ! isset( $_POST['send-notification'] ) );
+							// Go through courses
+							foreach ( $course_ids as $course_id ) {
+
+								// Submit booking
+								$booking = $this->submit_booking( $course_id, $user_id, ! isset( $_POST['send-notification'] ) );
+
+								if ( $booking === true ) {
+
+									// Approve?
+									// (retrospective bookings automatically approved)
+									if (	isset( $_POST['approve-booking'] ) ||
+										( function_exists( 'slt_cf_field_value' ) && slt_cf_field_value( 'pcm-course-date-end', 'post', $_POST['course-id'] ) <= date( 'Y/m/d' ) )
+									) {
+										$this->approve_booking( $course_id, $user_id, ! isset( $_POST['send-notification'] ) );
+									}
+
+								} else {
+
+									// Build up problem details
+									$msg = 'problems';
+									$problems .= $user_id . '|' . $course_id . '|' . $booking . '-';
+
+								}
+
 							}
-
-						} else {
-
-							$msg = $booking;
 
 						}
 
+						// Problems to add to query string?
+						if ( $problems ) {
+							$redirect = add_query_arg( 'problems', $problems, $redirect );
+						}
+
 						// Redirect
-						$redirect = add_query_arg( 'msg', $msg, $_REQUEST['_wp_http_referer'] );
+						$redirect = add_query_arg( 'msg', $msg, $redirect );
+
+					}
+					break;
+				}
+
+				case 'add-booking-options': {
+					if ( current_user_can( $this->get_cap( 'manage_bookings' ) ) ) {
+						$msg = 'updated';
+						$redirect_url = $_REQUEST['_wp_http_referer'];
+
+						// Options that are stored between sessions
+						foreach ( array( 'users-multiple-select', 'courses-multiple-select' ) as $option ) {
+							$this->set_admin_user_setting( 'add-bookings-' . $option, ! empty( $_POST['add-bookings-' . $option] ) );
+						}
+						if ( in_array( $_POST['add-bookings-users-orderby'], array( 'registered', 'display_name' ) ) ) {
+							$this->set_admin_user_setting( 'add-bookings-users-orderby', $_POST['add-bookings-users-orderby'] );
+						}
+
+						// Options that need to be passed on query string
+						foreach ( array( 'users-select-date-start', 'users-select-date-end', 'courses-select-year', 'courses-select-type' ) as $option ) {
+							$redirect_url = add_query_arg( $option, $_POST[ $option ], $redirect_url );
+						}
+
+						// Redirect
+						$redirect = add_query_arg( 'msg', $msg, $redirect_url );
 
 					}
 					break;
@@ -954,6 +1008,33 @@ class Pilau_Course_Management {
 	 */
 	public function output_dcf_dependency_notice() {
 		echo '<div class="error"><p>' . __( 'The Pilau Course Management plugin depends on the <a href="http://wordpress.org/plugins/developers-custom-fields/">Developer\'s Custom Fields</a> plugin, which isn\'t currently activated', $this->plugin_slug ) . '</p></div>';
+	}
+
+	/**
+	 * User query mods
+	 *
+	 * @since	0.3.6
+	 * @return	void
+	 */
+	public function pre_user_query( $q ) {
+		global $wpdb;
+
+		// Filtering for date registered before
+		if ( isset( $q->query_vars['pcm_registered_before'] ) ) {
+			$q->query_where .= $wpdb->prepare(
+				" AND {$wpdb->users}.user_registered <= FROM_UNIXTIME( %d ) ",
+				$q->query_vars['pcm_registered_before']
+			);
+		}
+
+		// Filtering for date registered after
+		if ( isset( $q->query_vars['pcm_registered_after'] ) ) {
+			$q->query_where .= $wpdb->prepare(
+				" AND {$wpdb->users}.user_registered >= FROM_UNIXTIME( %d ) ",
+				$q->query_vars['pcm_registered_after']
+			);
+		}
+
 	}
 
 	/**

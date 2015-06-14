@@ -3,6 +3,7 @@
 ## 0.3.6
 * Changed to allow lessons to be assigned to multiple courses at once
 * Added admin user settings storage
+* Added interface options for Add Bookings screen
 * Added `pcm_get_course_lessons_args` filter
 
 ## 0.3.5
