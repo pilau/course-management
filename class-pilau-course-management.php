@@ -1084,13 +1084,12 @@ class Pilau_Course_Management {
 
 				// Is there a course for the lesson?
 				if ( $course_id = slt_cf_field_value( 'pcm-lesson-course', 'post', $post->ID, '', '', false, false ) ) {
-					// If more than one, allow filter to decide on the one to use, or just use the first
+					// If more than one, allow filter to decide on the one to use
 					if ( count( $course_id ) > 1 ) {
 						$course_id = apply_filters( 'pcm_multiple_course_lesson_which_one', $course_id );
-						if ( count( $course_id ) > 1 ) {
-							$course_id = $course_id[0];
-						}
 					}
+					// Whatever's left, just use the first
+					$course_id = $course_id[0];
 					$course = get_post( $course_id );
 					$course_name = $course->post_name;
 				} else {
