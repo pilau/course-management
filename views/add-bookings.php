@@ -207,6 +207,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 						<?php } ?>
 					</select>
 				</div>
+				<p class="description clear"><?php _e( 'Select the type of courses you want to book users onto.', $PCM->plugin_slug ) ?></p>
 			</div>
 		</div>
 
