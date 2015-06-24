@@ -94,3 +94,27 @@ table.pcm-table a:focus {
 #pcm-bookings-filters div.filters-usermeta {
   clear: both;
 }
+.pcm-options-group {
+  clear: both;
+  overflow: hidden;
+  margin: 0 0 1em;
+  padding: 1em;
+  background-color: #ddd;
+  border-radius: .5em;
+}
+.pcm-option {
+  float: left;
+  overflow: hidden;
+  width: 300px;
+  margin: 0 1em 1em 0;
+}
+.pcm-option-label {
+  float: left;
+  width: 40%;
+  font-weight: bold;
+  line-height: 1;
+}
+.pcm-option-input {
+  float: right;
+  width: 55%;
+}

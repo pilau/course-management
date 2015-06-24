@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3.6';
+	const VERSION = '0.3.7';
 
 	/**
 	 * Unique identifier for your plugin.

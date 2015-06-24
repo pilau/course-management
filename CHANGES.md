@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.7
+* Improved styling for add bookings screen options
+
 ## 0.3.6
 * Changed to allow lessons to be assigned to multiple courses at once
 * Added admin user settings storage
