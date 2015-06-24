@@ -137,7 +137,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 		<h3><?php _e( 'Selection options', $PCM->plugin_slug ); ?></h3>
 
 		<div class="pcm-options-group">
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-users-multiple-selection">
 				<div class="pcm-option-label">
 					<label for="pcm-add-bookings-users-multiple-select"><?php _e( 'Users multiple selection', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -145,7 +145,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					<input type="checkbox" name="add-bookings-users-multiple-select" id="pcm-add-bookings-users-multiple-select" value="1"<?php checked( $pcm_admin_user_settings['add-bookings-users-multiple-select'] ); ?>>
 				</div>
 			</div>
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-users-date-start">
 				<div class="pcm-option-label">
 					<label for="pcm-users-select-date-start"><?php _e( 'User registered date range start', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -153,7 +153,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					<input type="date" name="users-select-date-start" id="pcm-users-select-date-start" value="<?php echo $pcm_users_select_date_start; ?>" max="<?php echo date( $pcm_date_select_format ); ?>">
 				</div>
 			</div>
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-users-date-end">
 				<div class="pcm-option-label">
 					<label for="pcm-users-select-date-end"><?php _e( 'User registered date range end', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -161,7 +161,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					<input type="date" name="users-select-date-end" id="pcm-users-select-date-end" value="<?php echo $pcm_users_select_date_end; ?>" max="<?php echo date( $pcm_date_select_format ); ?>">
 				</div>
 			</div>
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-users-order">
 				<div class="pcm-option-label">
 					<label for="pcm-add-bookings-users-orderby"><?php _e( 'Users ordered by', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -175,7 +175,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 		</div>
 
 		<div class="pcm-options-group">
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-courses-multiple-selection">
 				<div class="pcm-option-label">
 					<label for="pcm-add-bookings-courses-multiple-select"><?php _e( 'Courses multiple selection', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -183,7 +183,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					<input type="checkbox" name="add-bookings-courses-multiple-select" id="pcm-add-bookings-courses-multiple-select" value="1"<?php checked( $pcm_admin_user_settings['add-bookings-courses-multiple-select'] ); ?>>
 				</div>
 			</div>
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-courses-year">
 				<div class="pcm-option-label">
 					<label for="pcm-courses-select-year"><?php _e( 'Courses year', $PCM->plugin_slug ); ?></label>
 				</div>
@@ -195,7 +195,7 @@ $pcm_courses_to_book = new WP_Query( apply_filters( 'pcm_courses_to_book_args', 
 					</select>
 				</div>
 			</div>
-			<div class="pcm-option">
+			<div class="pcm-option pcm-option-courses-type">
 				<div class="pcm-option-label">
 					<label for="pcm-courses-select-type"><?php _e( 'Course type', $PCM->plugin_slug ); ?></label>
 				</div>
