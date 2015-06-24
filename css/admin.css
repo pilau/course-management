@@ -118,3 +118,6 @@ table.pcm-table a:focus {
   float: right;
   width: 55%;
 }
+.pcm-option-courses-type {
+  width: 500px;
+}

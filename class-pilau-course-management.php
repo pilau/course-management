@@ -372,12 +372,13 @@ class Pilau_Course_Management {
 			add_action( 'admin_notices', array( $this, 'output_dcf_dependency_notice' ) );
 		}
 
-		// Merge stored user settings with defaults
+		// Get stored user settings
 		$admin_user_settings = get_user_meta( get_current_user_id(), '_pcm_admin_user_settings', true );
 		if ( empty( $admin_user_settings ) ) {
 			$admin_user_settings = array();
 		}
-		$this->admin_user_settings = array_merge(
+		// Apply defaults
+		$admin_user_settings = array_merge(
 			array(
 				'add-bookings-users-multiple-select'	=> true,
 				'add-bookings-users-orderby'			=> 'registered',
@@ -385,6 +386,8 @@ class Pilau_Course_Management {
 			),
 			$admin_user_settings
 		);
+		// Apply filters and set
+		$this->admin_user_settings = apply_filters( 'pcm_admin_user_settings', $admin_user_settings );
 
 	}
 

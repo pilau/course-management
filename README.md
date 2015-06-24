@@ -13,6 +13,7 @@ Note that the plugin folder should be named `course-management`. This is because
 * `pcm_custom_fields_args` - Use to modify the default custom fields arguments (uses [Developer's Custom Fields](http://sltaylor.co.uk/wordpress/developers-custom-fields-docs/))
 * `pcm_post_type_args` - Use to modify the default custom post type arguments
 * `pcm_get_course_lessons_args` - Use to modify the default arguments for getting a course type's lessons
+* `pcm_admin_user_settings` - Use to force values for these settings
 * `pcm_course_instance_title` - Use to modify the automatically-created title for course instances. The input is an array; if the output is still an array, it will be imploded and joined with commas - implode it yourself to do otherwise.
 * `pcm_cap` - Use to modify the default capability for a particular action. The default is `pcm_{action}`. Custom capabilities must be added with a plugin such as [Members](http://wordpress.org/plugins/members/).
 * `pcm_role_display_name` - Use to modify the default display names for roles created by the plugin. As well as the default display name, the filter passes the role name, i.e. `pcm-course-participant` or `pcm-tutor`.
