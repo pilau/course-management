@@ -3,6 +3,7 @@
 ## 0.3.7
 * Improved styling for add bookings screen options
 * Added `pcm_admin_user_settings` filter
+* Put Subscribers above Course Participants in Add Bookings user select
 
 ## 0.3.6
 * Changed to allow lessons to be assigned to multiple courses at once

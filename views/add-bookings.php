@@ -38,7 +38,7 @@ if ( ! empty( $_REQUEST['courses-select-type'] ) ) {
 // Default arguments for gettings users
 // pcm_* arguments are custom
 $pcm_users_to_book_args = apply_filters( 'pcm_users_to_book_args', array(
-	'role'					=> array( 'pcm-course-participant', 'subscriber' ),
+	'role'					=> array( 'subscriber', 'pcm-course-participant' ),
 	'orderby'				=> $pcm_admin_user_settings['add-bookings-users-orderby'],
 	'order'					=> $pcm_admin_user_settings['add-bookings-users-orderby'] == 'registered' ? 'DESC' : 'ASC',
 	'pcm_registered_before'	=> $pcm_users_select_date_end_timestamp,
