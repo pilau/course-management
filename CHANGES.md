@@ -3,6 +3,7 @@
 ## 0.3.7
 * Improved styling for add bookings screen options
 * Added `pcm_admin_user_settings` filter
+* Added `pcm_manage_bookings_extra_cols_headings` and `pcm_manage_bookings_extra_cols_cells` actions
 * Put Subscribers above Course Participants in Add Bookings user select
 
 ## 0.3.6

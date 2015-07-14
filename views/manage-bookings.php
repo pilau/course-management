@@ -315,6 +315,7 @@ switch ( $pcm_mode ) {
 							<?php if ( ! $pcm_course_instance_id ) { ?>
 								<th scope="col"><?php _e( 'Instance', $PCM->plugin_slug ); ?></th>
 							<?php } ?>
+							<?php do_action( 'pcm_manage_bookings_extra_cols_headings' ); ?>
 							<th scope="col"><?php _e( 'Date', $PCM->plugin_slug ); ?></th>
 							<th scope="col"><?php _e( 'Submitted', $PCM->plugin_slug ); ?></th>
 							<?php if ( $pcm_booking_status == 'all' ) { ?>
@@ -359,6 +360,7 @@ switch ( $pcm_mode ) {
 								<?php if ( ! $pcm_course_instance_id ) { ?>
 									<td><?php echo get_the_title( $pcm_booking['details']['course_instance_id'] ); ?></td>
 								<?php } ?>
+								<?php do_action( 'pcm_manage_bookings_extra_cols_cells', $pcm_userinfo, $pcm_usermeta, $pcm_booking ); ?>
 								<td><?php
 									echo implode( '/', array_reverse( explode( '/', $pcm_booking['details']['course_date_start'] ) ) );
 									if ( $pcm_booking['details']['course_date_start'] != $pcm_booking['details']['course_date_end'] ) {

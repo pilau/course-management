@@ -44,3 +44,5 @@ Note that the plugin folder should be named `course-management`. This is because
 * `pcm_booking_denied` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
 * `pcm_booking_completed` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
 * `pcm_booking_deleted` - Args: `$course_instance_id`, `$user_id`, `$course_bookings`, `$suppress_notification`
+* `pcm_manage_bookings_extra_cols_headings`
+* `pcm_manage_bookings_extra_cols_cells` - Args: `$pcm_userinfo`, `$pcm_usermeta`, `$pcm_booking`
