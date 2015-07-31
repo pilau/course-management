@@ -29,7 +29,7 @@ $pcm_course_instances = get_posts( apply_filters( 'pcm_send_invitations_course_i
 
 <div class="wrap">
 
-	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 	<?php if ( isset( $_GET['msg'] ) ) { ?>
 		<div id="message" class="<?php if ( $_GET['msg'] == 'no-invitees' ) { echo 'error'; } else { echo 'updated'; } ?>">

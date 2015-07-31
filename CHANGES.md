@@ -5,6 +5,7 @@
 * Added `pcm_admin_user_settings` filter
 * Added `pcm_manage_bookings_extra_cols_headings` and `pcm_manage_bookings_extra_cols_cells` actions
 * Put Subscribers above Course Participants in Add Bookings user select
+* Changed admin headings to H1
 
 ## 0.3.6
 * Changed to allow lessons to be assigned to multiple courses at once

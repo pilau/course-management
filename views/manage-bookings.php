@@ -204,7 +204,7 @@ switch ( $pcm_mode ) {
 
 		case 'list-bookings': { ?>
 
-			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 			<?php if ( isset( $_GET['msg'] ) ) { ?>
 				<div id="message" class="updated">
@@ -458,7 +458,7 @@ switch ( $pcm_mode ) {
 
 		case 'send-email': { ?>
 
-			<h2><?php _e( 'Compose email', $PCM->plugin_slug ); ?></h2>
+			<h1><?php _e( 'Compose email', $PCM->plugin_slug ); ?></h1>
 
 			<form action="" method="post" id="pcm-send-bookings-email" class="pcm-form">
 
