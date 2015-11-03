@@ -1,6 +1,6 @@
 # Changelog for Pilau Course Management
 
-## 0.3.8 (????-??-??)
+## 0.3.8 (2015-11-03)
 * Fixed use of `slt_cf_pre_save_value` (changed to filter, not action)
 
 ## 0.3.7 (2015-07-31)
