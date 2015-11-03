@@ -23,7 +23,7 @@ class Pilau_Course_Management {
 	 * @since   0.1
 	 * @var     string
 	 */
-	const VERSION = '0.3.7';
+	const VERSION = '0.3.8';
 
 	/**
 	 * Unique identifier for your plugin.
@@ -114,7 +114,7 @@ class Pilau_Course_Management {
 		add_filter( 'title_save_pre', array( $this, 'course_instance_title' ) );
 		add_action( 'save_post_pcm-course-instance', array( $this, 'default_course_end_date' ), 10, 2 );
 		add_action( 'save_post_pcm-course-instance', array( $this, 'synch_course_booking_dates' ), 11, 2 );
-		add_action( 'slt_cf_pre_save_value', array( $this, 'no_course_lessons_id_zero' ), 11, 5 );
+		add_filter( 'slt_cf_pre_save_value', array( $this, 'no_course_lessons_id_zero' ), 11, 5 );
 		add_action( 'pre_user_query', array( $this, 'pre_user_query' ) );
 
 	}
