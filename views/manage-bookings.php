@@ -210,6 +210,15 @@ switch ( $pcm_mode ) {
 				<div id="message" class="updated">
 					<?php
 					switch ( $_GET['msg'] ) {
+						case 'deny':
+							echo '<p>' . __( 'Booking denied successfully.', $PCM->plugin_slug ) . '</p>';
+							break;
+						case 'approve':
+							echo '<p>' . __( 'Booking approved successfully.', $PCM->plugin_slug ) . '</p>';
+							break;
+						case 'complete':
+							echo '<p>' . __( 'Booking completed successfully.', $PCM->plugin_slug ) . '</p>';
+							break;
 						case 'new-status':
 							echo '<p>' . __( 'Booking(s) status changed successfully.', $PCM->plugin_slug ) . '</p>';
 							break;

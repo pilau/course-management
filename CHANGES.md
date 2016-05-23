@@ -1,5 +1,8 @@
 # Changelog for Pilau Course Management
 
+## 0.3.9 (????-??-??)
+* Added some missing manage bookings action messages
+
 ## 0.3.8 (2015-11-03)
 * Fixed use of `slt_cf_pre_save_value` (changed to filter, not action)
 
